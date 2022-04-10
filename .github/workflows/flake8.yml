@@ -1,0 +1,27 @@
+name: flake8
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Enables this workflow to be manually run from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Assume Python 3.X is installed and install Python requirements
+      - name: Install Python requirements
+        run: |
+            python --version
+            pip install -r requirements.txt
+
+      # Run flake8 using the projects flake8.conf file
+      - name: Run flake8
+        run: flake8 --config flake8.conf
