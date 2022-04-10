@@ -4,3 +4,4 @@ pandas
 tinydb
 requests
 pytest
+flake8

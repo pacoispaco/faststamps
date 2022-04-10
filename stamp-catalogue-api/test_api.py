@@ -17,17 +17,18 @@ uvicorn_api_pid = None
 
 @pytest.fixture(scope="module")
 def api():
-    #print("\nSetup: Start Uvicorn with API at %s" % API_BASE_URL)
     cmd = "uvicorn main:app --reload --port=%d" % API_PORT
+    # print("\nSetup: Start Uvicorn with API at %s" % API_BASE_URL)
     p = subprocess.Popen(cmd.split(), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     time.sleep(1)
     yield "api"
-    #print("\nTeardown: Stop Uvicorn with API at %s" % API_BASE_URL)
+    # print("\nTeardown: Stop Uvicorn with API at %s" % API_BASE_URL)
     p.terminate()
 
 
 def test_api_root(api):
-    url = '%s%s' % (API_BASE_URL, "/")
+    resource = "/"
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
     assert r.json() == {'name': 'Faststamps Catalogue API.',
@@ -38,7 +39,8 @@ def test_api_root(api):
 
 
 def test_api_stamps(api):
-    url = '%s%s' % (API_BASE_URL, "/stamps")
+    resource = "/stamps"
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
     with open("test-data/stamps.json") as f:
@@ -47,49 +49,66 @@ def test_api_stamps(api):
 
 
 def test_api_stamps_filter_title(api):
-    url = '%s%s' % (API_BASE_URL, "/stamps?title=Ceres")
+    resource = ("/stamps"
+                "?title=Ceres")
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
     assert r.json()["count"] == 117
 
 
 def test_api_stamps_filter_year(api):
-    url = '%s%s' % (API_BASE_URL, "/stamps?year=1931,1932,1933")
+    resource = ("/stamps"
+                "?year=1931,1932,1933")
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
     assert r.json()["count"] == 80
 
 
 def test_api_stamps_filter_color(api):
-    url = '%s%s' % (API_BASE_URL, "/stamps?color=Green,Olive")
+    resource = ("/stamps"
+                "?color=Green,Olive")
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
     assert r.json()["count"] == 185
 
 
 def test_api_stamps_filter_value(api):
-    url = '%s%s' % (API_BASE_URL, "/stamps?value=1 French centime")
+    resource = ("/stamps"
+                "?value=1 French centime")
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
     assert r.json()["count"] == 36
 
 
 def test_api_stamps_filter_stamp_type(api):
-    url = '%s%s' % (API_BASE_URL, "/stamps?stamp_type=timbre")
+    resource = ("/stamps"
+                "?stamp_type=timbre")
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
     assert r.json()["count"] == 3770
 
 
 def test_api_stamps_combined_filter(api):
-    url = '%s%s' % (API_BASE_URL, "/stamps?title=Ceres&year=1850,1870,1872&color=Green,Olive&value=1 French centime&stamp_type=timbre")
+    resource = ("/stamps"
+                "?title=Ceres"
+                "&year=1850,1870,1872"
+                "&color=Green,Olive"
+                "&value=1 French centime"
+                "&stamp_type=timbre")
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
     assert r.json()["count"] == 3
 
 
 def test_api_stamps_1a(api):
-    url = '%s%s' % (API_BASE_URL, "/stamps/1a")
+    resource = "/stamps/1a"
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
     assert r.json() == {'yt': '1a',
@@ -101,14 +120,16 @@ def test_api_stamps_1a(api):
 
 
 def test_api_stamps_not_found(api):
-    url = '%s%s' % (API_BASE_URL, "/stamps/0")
+    resource = "/stamps/0"
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 404
-    assert r.json() == None
+    assert r.json() is None
 
 
 def test_api_stamp_titles(api):
-    url = '%s%s' % (API_BASE_URL, "/stamp_titles")
+    resource = "/stamp_titles"
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
     with open("test-data/stamp_titles.json") as f:
@@ -117,7 +138,9 @@ def test_api_stamp_titles(api):
 
 
 def test_api_stamp_titles_wildcard_search(api):
-    url = '%s%s' % (API_BASE_URL, "/stamp_titles?q=*")
+    resource = ("/stamp_titles"
+                "?q=*")
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
     wildcard_count = 3226
@@ -129,7 +152,9 @@ def test_api_stamp_titles_wildcard_search(api):
 
 
 def test_api_stamp_titles_prefix_search(api):
-    url = '%s%s' % (API_BASE_URL, "/stamp_titles?q=Ce*")
+    resource = ("/stamp_titles"
+                "?q=Ce*")
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
     assert r.json()["count"] == 53
@@ -137,7 +162,9 @@ def test_api_stamp_titles_prefix_search(api):
 
 
 def test_api_stamp_titles_suffix_search(api):
-    url = '%s%s' % (API_BASE_URL, "/stamp_titles?q=*nt")
+    resource = ("/stamp_titles"
+                "?q=*nt")
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
     assert r.json()["count"] == 20
@@ -145,7 +172,9 @@ def test_api_stamp_titles_suffix_search(api):
 
 
 def test_api_stamp_titles_infix_search(api):
-    url = '%s%s' % (API_BASE_URL, "/stamp_titles?q=C*s")
+    resource = ("/stamp_titles"
+                "?q=C*s")
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
     assert r.json()["count"] == 52
@@ -153,14 +182,17 @@ def test_api_stamp_titles_infix_search(api):
 
 
 def test_api_stamp_titles_wildcard_search_multiple_stars(api):
-    url = '%s%s' % (API_BASE_URL, "/stamp_titles?q=**")
+    resource = ("/stamp_titles"
+                "?q=**")
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 400
     assert r.json() == "Multiple wildcard stars '*' in query is not supported."
 
 
 def test_api_stamp_years(api):
-    url = '%s%s' % (API_BASE_URL, "/stamp_years")
+    resource = "/stamp_years"
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
     with open("test-data/stamp_years.json") as f:
@@ -169,7 +201,8 @@ def test_api_stamp_years(api):
 
 
 def test_api_stamp_colors(api):
-    url = '%s%s' % (API_BASE_URL, "/stamp_colors")
+    resource = "/stamp_colors"
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
     with open("test-data/stamp_colors.json") as f:
@@ -178,7 +211,8 @@ def test_api_stamp_colors(api):
 
 
 def test_api_stamp_values(api):
-    url = '%s%s' % (API_BASE_URL, "/stamp_values")
+    resource = "/stamp_values"
+    url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
     with open("test-data/stamp_values.json") as f:

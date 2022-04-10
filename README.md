@@ -46,6 +46,11 @@ $ source env/bin/activate
 $ pip install -r requirements.txt
 ```
 
+To run flake8 linting:
+```
+$ flake8 --config flake8.conf
+```
+
 ### The Faststamps catalogue API
 
 Go to the `stamps-catalogue-api` directory. To start up the stamps-catalogue-api run:
