@@ -1,3 +1,5 @@
+![Flake8 linting](https://github.com/pacoispaco/faststamps/actions/workflows/flake8.yml/badge.svg)
+
 # Faststamps
 
 Faststamps is a [responsive web-application](https://en.wikipedia.org/wiki/Responsive_web_design) for managing a stamp collection. This is a sandbox project for trying out [FastAPI](https://fastapi.tiangolo.com/) & [HTMX](https://htmx.org/) in a tiny micro-service based system, and also for trying out some new technology and ideas.
