@@ -1,6 +1,6 @@
 ![Flake8 linting](https://github.com/pacoispaco/faststamps/actions/workflows/flake8.yml/badge.svg) ![Pytest unit tests](https://github.com/pacoispaco/faststamps/actions/workflows/pytest.yml/badge.svg)
 
-# Faststamps
+# Faststamps app
 
 Faststamps is a [responsive web-application](https://en.wikipedia.org/wiki/Responsive_web_design) for managing a stamp collection. This is a sandbox project for trying out [FastAPI](https://fastapi.tiangolo.com/) & [HTMX](https://htmx.org/) in a tiny micro-service based system, and also for trying out some new technology and ideas.
 
@@ -19,6 +19,8 @@ It is intended to be run as three [Docker](https://www.docker.com) containers wi
 
 ## Requirements
 
+The total requirements are as follows, but note that the Faststamps app, Catalogue API and Collection API have slightly different dependencies and all have their own `requirements.txt`files.
+
  * [Python 3.8+](https://www.python.org/) but should probably work with earlier versions too.
  * [FastAPI](https://fastapi.tiangolo.com/).
  * [uvicorn](https://www.uvicorn.org).
@@ -32,48 +34,15 @@ It is intended to be run as three [Docker](https://www.docker.com) containers wi
 
 ## Development
 
-Set up the development environment with:
+Set up the development environment by first cloning the git repo.
 
- 1. Clone the git repo.
- 2. Create a virtual env:
-```
-$ virtualenv -p python3 env
-```
- 3. Jump into the virtual env:
-```
-$ source env/bin/activate
-```
- 4. Install dependent packages with:
-```
-$ pip install -r requirements.txt
-```
+There are three separate directories for the thre components of Faststamps; Faststamps app, Catalogue API and Collection API. You should set up separate virtual environments in each directory and work locally with each component in the respective directory, as described in the respective README.md files:
 
-To run flake8 linting:
-```
-$ flake8 --config flake8.conf
-```
+ * [stamp-catalogue-api/README.md](stamp-catalogue-api/README.md).
+ * [stamp-collection-api/README.md](stamp-collection-api/README.md).
+ * [stamp-app/README.md](stamp-app/README-md).
 
-### The Faststamps catalogue API
-
-Go to the `stamps-catalogue-api` directory. To start up the stamps-catalogue-api run:
-```
-$ uvicorn main:app --reload
-```
-
-Unit tests are written with Pytest. To run the unit tests:
-```
-$ pytest -vs
-```
-
-### The Faststamps collection API
-
-Go to the `stamps-collection-api` directory. To start up the stamps-collection-api run:
-
-TBD.
-
-### The Faststamps web application
-
-TBD.
+This top level directory contains a Docker compose file for locally starting up all containers as a service.
 
 # License
 
