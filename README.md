@@ -6,7 +6,7 @@ Faststamps is a [responsive web-application](https://en.wikipedia.org/wiki/Respo
 
 Since it is a responsive web-application, you can use it in your mobile phone to keep track of your stamp collection.
 
-It consists of:
+It consists of three components:
 * A web application **stamp-ui** written in [HTMX](https://htmx.org/) and [Bulma](https://bulma.io/) served by [FastAPI](https://fastapi.tiangolo.com/).
 * A backend consisting of two micro-services:
   * A read-only HTTP/JSON API **stamp-catalogue-api** implemented with [FastAPI](https://fastapi.tiangolo.com/) and containing a stamp catalogue, using a CSV file as a database read into a [Pandas](https://pandas.pydata.org/) dataFrame at startup.
@@ -34,15 +34,25 @@ The total requirements are as follows, but note that the Faststamps app, Catalog
 
 ## Development
 
-Set up the development environment by first cloning the git repo.
+Set up a local development environment by first cloning the git repo.
 
-There are three separate directories for the thre components of Faststamps; Faststamps app, Catalogue API and Collection API. You should set up separate virtual environments in each directory and work locally with each component in the respective directory, as described in the respective README.md files:
+There are three separate directories for the three components of Faststamps; Faststamps app, Catalogue API and Collection API. You should set up separate virtual environments in each directory and work locally with each component in the respective directory, as described in the respective README.md files:
 
  * [stamp-catalogue-api/README.md](stamp-catalogue-api/README.md).
  * [stamp-collection-api/README.md](stamp-collection-api/README.md).
  * [stamp-app/README.md](stamp-app/README-md).
 
 This top level directory contains a Docker compose file for locally starting up all containers as a service.
+
+## A few words on the design
+
+Bare in mind this a personal sand-box project for trying out new technology and ideas.
+
+The core idea is to separate the _**a catalogue of stamps**_ from _**a personal collection of stamps**_. We implement these two concepts as two different information domains, each with their own bounded context and internal data model. The shared information between the two information domains is constrained to the basic concept of a "stamp" that has a unique "id". By sharing this information the both information domains can together, provide a basis for a web app where a user can keep track of his/her stamp collection as related to a stamp catalogue.
+
+Note that the two information domains, the catalogue of stamps and the personal collection of stamps, have different _**internal models of what a stamp is**_, yet they have a shared general understanding of what a stamp is and how to identify it.
+
+By separating the system into two different information domains, and thus two separate API:s, we gain a cleaner separation of concerns, we facilitate working on separate parts of the system and make it easier to fix, adapt and upgrade these parts independently of each other. Hopefully we also provide a structure to the system that makes it easier to understand. However, this also comes at a cost. We need to maintain two separate API:s with their associated unit tests and documentation, and we also get a more complicated run time setup.
 
 # License
 

@@ -49,3 +49,24 @@ Unit tests are written with Pytest. The unit test program `test_api.py` runs the
 ```
 $ pytest -vs
 ```
+
+## The stamp catalog CSV file
+
+The Catalogue API will read a stamp catalogue in CSV format. The API assumes the following structure of CSV file:
+
+* The first row contains column headers and the subsequent rows contain data on individal stamps.
+* Each row must represent data on a single stamp.
+* The first column must contain a unique id for the stamp.
+* The column headers are interpreted as follows:
+  * The first column must have a column name beginning with **id-\<scheme\>**, followed by some name identifying the id scheme. E.g **id-yt** would denote that the Yvert-Tellier catalogue numbering scheme is being used to identify the stamps.
+  * After the first column, the following column names are recommended but none is required:
+    - **id-\<id-scheme\>**. You can have more columns with stamp ids, based on other id schemes. E.g. **id-mi** for Michel catalogue numbers.
+    - **type-\<lang\>**. The type of the stamp, where <lang> is the same as above. E.g. the column name **type-fr**.
+    - **issued**. The year the stamp was first issued. E.g. the value **1849**.
+    - **years**. The years during which stamps in this series were issued. Note that the catalogue numbers do not necessarily reflect the order in which stamps were issued. E.g. the value **1849-1850**.
+    - **title-\<lang\>**. The descriptive title of the stamp, where <lang> is a ISO 639-1 language code, specifying the language. There can be multiple title columns, each with a different language code. E.g. the column names **title-en** and **title-fr**.
+    - **value-\<lang\>**. The printed value of the stamp, where <lang> is the same as above. E.g. the column names **value-en** and **value-fr**.
+    - **color-\<lang\>**. The color of the stamp, where <lang> is the same as above. E.g. the column names **color-en** and **color-fr**.
+    - **description-\<lang\>**. The description of the kind of stamp, where <lang> is the same as above. E.g. the column names **description-en** and **description-fr**.
+    - **perforated**. Is the stamp perforated or not. Values can be **no** or **yes**.
+    - **\<media-type\>**. Link to media file for the stamp, where <media-type> is a [IANA media type](https://www.iana.org/assignments/media-types/media-types.xhtml). E.g. the column name **image/jpeg**.
