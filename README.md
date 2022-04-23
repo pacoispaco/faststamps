@@ -48,7 +48,7 @@ This top level directory contains a Docker compose file for locally starting up 
 
 Bare in mind this a personal sand-box project for trying out new technology and ideas.
 
-The core idea is to separate the _**a catalogue of stamps**_ from _**a personal collection of stamps**_. We implement these two concepts as two different information domains, each with their own bounded context and internal data model. The shared information between the two information domains is constrained to the basic concept of a "stamp" that has a unique "id". By sharing this information the both information domains can together, provide a basis for a web app where a user can keep track of his/her stamp collection as related to a stamp catalogue.
+The core idea is to separate the _**catalogue of stamps**_ from _**a personal collection of stamps**_. We implement these two concepts as two different information domains, each with their own bounded context and internal data model. The shared information between the two information domains is constrained to the basic concept of a "stamp" that has a unique "id". By sharing this information the both information domains can together, provide a basis for an app where a user can keep track of his/her stamp collection as related to a stamp catalogue.
 
 Note that the two information domains, the catalogue of stamps and the personal collection of stamps, have different _**internal models of what a stamp is**_, yet they have a shared general understanding of what a stamp is and how to identify it.
 
