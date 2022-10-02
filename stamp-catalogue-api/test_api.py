@@ -7,12 +7,9 @@ import json
 
 
 # Constants
-API_PORT = 8888
+API_PORT = 8008
 API_BASE_URL = "http://127.0.0.1:%s" % (API_PORT)
-
-
-# Pid of the uvicorn process running the API
-uvicorn_api_pid = None
+STAMPS_TEST_DATA_FILE = "test-data/stamps.json"
 
 
 @pytest.fixture(scope="module")
@@ -33,8 +30,8 @@ def test_api_root(api):
     assert r.status_code == 200
     assert r.json() == {'name': 'Faststamps Catalogue API.',
                         'version': '0.0.1',
-                        'openapi-specification': 'http://127.0.0.1:8888/docs',
-                        'health': 'http://127.0.0.1:8888/health',
+                        'openapi-specification': f'{API_BASE_URL}/docs',
+                        'health': f'{API_BASE_URL}/health',
                         'resources': {}}
 
 
@@ -43,9 +40,20 @@ def test_api_stamps(api):
     url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
-    with open("test-data/stamps.json") as f:
+    with open(STAMPS_TEST_DATA_FILE) as f:
         data = json.load(f)
     assert r.json() == data
+
+
+def test_api_stamps_bad_start_and_count(api):
+    resource = "/stamps?start=-1"
+    url = '%s%s' % (API_BASE_URL, resource)
+    r = requests.get(url)
+    assert r.status_code == 400
+    resource = "/stamps?count=-1"
+    url = '%s%s' % (API_BASE_URL, resource)
+    r = requests.get(url)
+    assert r.status_code == 400
 
 
 def test_api_stamps_filter_title(api):
@@ -54,16 +62,16 @@ def test_api_stamps_filter_title(api):
     url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
-    assert r.json()["count"] == 117
+    assert r.json()["count"] == 116
 
 
 def test_api_stamps_filter_year(api):
     resource = ("/stamps"
-                "?year=1931,1932,1933")
+                "?issued=1931,1932,1933")
     url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
-    assert r.json()["count"] == 80
+    assert r.json()["count"] == 54
 
 
 def test_api_stamps_filter_color(api):
@@ -72,7 +80,7 @@ def test_api_stamps_filter_color(api):
     url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
-    assert r.json()["count"] == 185
+    assert r.json()["count"] == 90
 
 
 def test_api_stamps_filter_value(api):
@@ -81,16 +89,16 @@ def test_api_stamps_filter_value(api):
     url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
-    assert r.json()["count"] == 36
+    assert r.json()["count"] == 32
 
 
 def test_api_stamps_filter_stamp_type(api):
     resource = ("/stamps"
-                "?stamp_type=timbre")
+                "?stamp-type=Pour la poste Aérienne")
     url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
-    assert r.json()["count"] == 3770
+    assert r.json()["count"] == 127
 
 
 def test_api_stamps_combined_filter(api):
@@ -105,19 +113,195 @@ def test_api_stamps_combined_filter(api):
     assert r.status_code == 200
     assert r.json()["count"] == 3
 
-
-def test_api_stamps_1a(api):
-    resource = "/stamps/1a"
+def test_api_stamps_1(api):
+    resource = "/stamps/Poste-1"
     url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
-    assert r.json() == {'yt': '1a',
-                        'issued': 1850,
-                        'title': 'Ceres',
-                        'value': '10 French centime',
-                        'color': 'Bistre brown',
-                        'type': 'timbre'}
+    assert r.json() == {'color-en': 'Yellow bistre',
+ 'color-fr': 'bistre-jaune',
+ 'description-fr': 'Typographie. Papier teinté.',
+ 'id': {'type': 'Poste', 'yt-no': '1', 'yt-variant': ''},
+ 'image/jpeg': 'T01-000-1.jpg',
+ 'issued': '1850',
+ 'perforated-dimensions': 'No',
+ 'title-en': 'Ceres',
+ 'title-fr': 'Cérès.',
+ 'value-en': '10 French centime',
+ 'value-fr': '10 c.',
+ 'variants': {'': {'color-en': 'Yellow bistre',
+                   'color-fr': 'bistre-jaune',
+                   'description-fr': 'Typographie. Papier teinté.',
+                   'image/jpeg': 'T01-000-1.jpg',
+                   'issued': '1850',
+                   'perforated-dimensions': 'No',
+                   'title-en': 'Ceres',
+                   'title-fr': 'Cérès.',
+                   'value-en': '10 French centime',
+                   'value-fr': '10 c.',
+                   'years': '1849-1850'},
+              'a': {'color-en': 'Bistre brown',
+                    'color-fr': 'bistre-brun',
+                    'description-fr': 'Typographie. Papier teinté.',
+                    'image/jpeg': 'T01-000-1.jpg',
+                    'issued': '1850',
+                    'perforated-dimensions': 'No',
+                    'title-en': 'Ceres',
+                    'title-fr': 'Cérès.',
+                    'value-en': '10 French centime',
+                    'value-fr': '10 c.',
+                    'years': '1849-1850'},
+              'b': {'color-en': '',
+                    'color-fr': 'bistre verdâtre',
+                    'description-fr': 'Typographie. Papier teinté.',
+                    'image/jpeg': 'T01-000-1.jpg',
+                    'issued': '1850',
+                    'perforated-dimensions': 'No',
+                    'title-en': '',
+                    'title-fr': 'Cérès.',
+                    'value-en': '',
+                    'value-fr': '10 c.',
+                    'years': '1849-1850'},
+              'c': {'color-en': '',
+                    'color-fr': 'bistre verdâtre foncé',
+                    'description-fr': 'Typographie. Papier teinté.',
+                    'image/jpeg': 'T01-000-1.jpg',
+                    'issued': '1850',
+                    'perforated-dimensions': 'No',
+                    'title-en': '',
+                    'title-fr': 'Cérès.',
+                    'value-en': '',
+                    'value-fr': '10 c.',
+                    'years': '1849-1850'},
+              'd': {'color-en': '',
+                    'color-fr': 'bistre-jaune Tête-bêche',
+                    'description-fr': 'Typographie. Papier teinté.',
+                    'image/jpeg': 'T01-000-1.jpg',
+                    'issued': '1850',
+                    'perforated-dimensions': 'No',
+                    'title-en': '',
+                    'title-fr': 'Cérès.',
+                    'value-en': '',
+                    'value-fr': '10 et 10 c.',
+                    'years': '1849-1850'},
+              'e': {'color-en': '',
+                    'color-fr': 'bistre verdâtre Tête-bêche',
+                    'description-fr': 'Typographie. Papier teinté.',
+                    'image/jpeg': 'T01-000-1.jpg',
+                    'issued': '1850',
+                    'perforated-dimensions': 'No',
+                    'title-en': '',
+                    'title-fr': 'Cérès.',
+                    'value-en': '',
+                    'value-fr': '10 et 10 c.',
+                    'years': '1849-1850'},
+              'f': {'color-en': '',
+                    'color-fr': 'bistre clair Réimpression',
+                    'description-fr': 'Typographie. Papier teinté.',
+                    'image/jpeg': 'T01-000-1.jpg',
+                    'issued': '1850',
+                    'perforated-dimensions': 'No',
+                    'title-en': '',
+                    'title-fr': 'Cérès.',
+                    'value-en': '',
+                    'value-fr': '10 c.',
+                    'years': '1849-1850'}},
+ 'years': '1849-1850'}
 
+
+def test_api_stamps_1a(api):
+    resource = "/stamps/Poste-1-a"
+    url = '%s%s' % (API_BASE_URL, resource)
+    r = requests.get(url)
+    assert r.status_code == 200
+    assert r.json() == {'color-en': 'Bistre brown',  'color-fr': 'bistre-brun',
+ 'description-fr': 'Typographie. Papier teinté.',
+ 'id': {'type': 'Poste', 'yt-no': '1', 'yt-variant': 'a'},
+ 'image/jpeg': 'T01-000-1.jpg',
+ 'issued': '1850',
+ 'perforated-dimensions': 'No',
+ 'title-en': 'Ceres',
+ 'title-fr': 'Cérès.',
+ 'value-en': '10 French centime',
+ 'value-fr': '10 c.',
+ 'variants': {'': {'color-en': 'Yellow bistre',
+                   'color-fr': 'bistre-jaune',
+                   'description-fr': 'Typographie. Papier teinté.',
+                   'image/jpeg': 'T01-000-1.jpg',
+                   'issued': '1850',
+                   'perforated-dimensions': 'No',
+                   'title-en': 'Ceres',
+                   'title-fr': 'Cérès.',
+                   'value-en': '10 French centime',
+                   'value-fr': '10 c.',
+                   'years': '1849-1850'},
+              'a': {'color-en': 'Bistre brown',
+                    'color-fr': 'bistre-brun',
+                    'description-fr': 'Typographie. Papier teinté.',
+                    'image/jpeg': 'T01-000-1.jpg',
+                    'issued': '1850',
+                    'perforated-dimensions': 'No',
+                    'title-en': 'Ceres',
+                    'title-fr': 'Cérès.',
+                    'value-en': '10 French centime',
+                    'value-fr': '10 c.',
+                    'years': '1849-1850'},
+              'b': {'color-en': '',
+                    'color-fr': 'bistre verdâtre',
+                    'description-fr': 'Typographie. Papier teinté.',
+                    'image/jpeg': 'T01-000-1.jpg',
+                    'issued': '1850',
+                    'perforated-dimensions': 'No',
+                    'title-en': '',
+                    'title-fr': 'Cérès.',
+                    'value-en': '',
+                    'value-fr': '10 c.',
+                    'years': '1849-1850'},
+              'c': {'color-en': '',
+                    'color-fr': 'bistre verdâtre foncé',
+                    'description-fr': 'Typographie. Papier teinté.',
+                    'image/jpeg': 'T01-000-1.jpg',
+                    'issued': '1850',
+                    'perforated-dimensions': 'No',
+                    'title-en': '',
+                    'title-fr': 'Cérès.',
+                    'value-en': '',
+                    'value-fr': '10 c.',
+                    'years': '1849-1850'},
+              'd': {'color-en': '',
+                    'color-fr': 'bistre-jaune Tête-bêche',
+                    'description-fr': 'Typographie. Papier teinté.',
+                    'image/jpeg': 'T01-000-1.jpg',
+                    'issued': '1850',
+                    'perforated-dimensions': 'No',
+                    'title-en': '',
+                    'title-fr': 'Cérès.',
+                    'value-en': '',
+                    'value-fr': '10 et 10 c.',
+                    'years': '1849-1850'},
+              'e': {'color-en': '',
+                    'color-fr': 'bistre verdâtre Tête-bêche',
+                    'description-fr': 'Typographie. Papier teinté.',
+                    'image/jpeg': 'T01-000-1.jpg',
+                    'issued': '1850',
+                    'perforated-dimensions': 'No',
+                    'title-en': '',
+                    'title-fr': 'Cérès.',
+                    'value-en': '',
+                    'value-fr': '10 et 10 c.',
+                    'years': '1849-1850'},
+              'f': {'color-en': '',
+                    'color-fr': 'bistre clair Réimpression',
+                    'description-fr': 'Typographie. Papier teinté.',
+                    'image/jpeg': 'T01-000-1.jpg',
+                    'issued': '1850',
+                    'perforated-dimensions': 'No',
+                    'title-en': '',
+                    'title-fr': 'Cérès.',
+                    'value-en': '',
+                    'value-fr': '10 c.',
+                    'years': '1849-1850'}},
+ 'years': '1849-1850'}
 
 def test_api_stamps_not_found(api):
     resource = "/stamps/0"
@@ -130,9 +314,25 @@ def test_api_stamps_not_found(api):
 def test_api_stamp_titles(api):
     resource = "/stamp_titles"
     url = '%s%s' % (API_BASE_URL, resource)
+    # First we test that english titles are returned if no explicit Accept-Languages is requested
     r = requests.get(url)
     assert r.status_code == 200
+    assert r.headers["Content-Language"] == "en"
     with open("test-data/stamp_titles.json") as f:
+        data = json.load(f)
+    assert r.json() == data
+    # Then we test that english titles are returned if Accept-Languages is set to "en"
+    r = requests.get(url, headers={"Accept-Language":"en"})
+    assert r.status_code == 200
+    assert r.headers["Content-Language"] == "en"
+    with open("test-data/stamp_titles.json") as f:
+        data = json.load(f)
+    assert r.json() == data
+    # Then we test that french titles are returned if Accept-Languages is set to "fr"
+    r = requests.get(url, headers={"Accept-Language":"fr"})
+    assert r.status_code == 200
+    assert r.headers["Content-Language"] == "fr"
+    with open("test-data/stamp_titles.fr.json") as f:
         data = json.load(f)
     assert r.json() == data
 
@@ -143,7 +343,7 @@ def test_api_stamp_titles_wildcard_search(api):
     url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
-    wildcard_count = 3226
+    wildcard_count = 2735
     assert r.json()["count"] == wildcard_count
     url = '%s%s' % (API_BASE_URL, "/stamp_titles")
     r = requests.get(url)
@@ -167,17 +367,17 @@ def test_api_stamp_titles_suffix_search(api):
     url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
-    assert r.json()["count"] == 20
+    assert r.json()["count"] == 12
     assert [title.endswith("nt") for title in r.json()["stamp_titles"]]
 
 
-def test_api_stamp_titles_infix_search(api):
+def test_api_stamp_titles_combined_prefix_and_suffix_search(api):
     resource = ("/stamp_titles"
                 "?q=C*s")
     url = '%s%s' % (API_BASE_URL, resource)
     r = requests.get(url)
     assert r.status_code == 200
-    assert r.json()["count"] == 52
+    assert r.json()["count"] == 39
     assert [title.startswith("C") and title.endswith("s") for title in r.json()["stamp_titles"]]
 
 
