@@ -17,27 +17,6 @@ It also needs a stamp catalogue in CSV-format. There is a `french-stamps.csv` in
 
 ## Development
 
-Set up the development environment for Faststamps Catalogue API with:
-
- 1. Clone the git repo for Faststamps.
- 2. In this subdirectory `stamp-catalogue-api`, create a virtual env:
-```
-$ virtualenv -p python3 env
-```
- 3. Jump into the virtual env:
-```
-$ source env/bin/activate
-```
- 4. Install dependent packages with:
-```
-$ pip install -r requirements.txt
-```
-
-To run flake8 linting:
-```
-$ flake8 --config flake8.conf
-```
-
 To run the stamps-catalogue-api:
 ```
 $ uvicorn main:app --reload

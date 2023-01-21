@@ -19,7 +19,7 @@ It is intended to be run as three [Docker](https://www.docker.com) containers wi
 
 ## Requirements
 
-The total requirements are as follows, but note that the Faststamps app, Catalogue API and Collection API have slightly different dependencies and all have their own `requirements.txt`files.
+The total requirements are as follows, but note that the Faststamps app, Catalogue API and Collection API are separate applications and have slightly different dependencies. These are the total dependencies:
 
  * [Python 3.8+](https://www.python.org/) but should probably work with earlier versions too.
  * [FastAPI](https://fastapi.tiangolo.com/).
@@ -32,11 +32,29 @@ The total requirements are as follows, but note that the Faststamps app, Catalog
  * [Docker](https://www.docker.com) and [Docker compose](https://docs.docker.com/compose/).
  * [Pytest](https://docs.pytest.org).
 
-## Development
+## Getting started
 
-Set up a local development environment by first cloning the git repo.
+Clone repo and set up development environment:
+```bash
+$ git clone git@github.com:pacoispaco/faststamps.git
+$ virtualenv -p python3 env
+$ source env/bin/activate
+$ pip install -r requirements.txt
+```
 
-There are three separate directories for the three components of Faststamps; Faststamps app, Catalogue API and Collection API. You should set up separate virtual environments in each directory and work locally with each component in the respective directory, as described in the respective README.md files:
+To run flake8 linting:
+```bash
+$ flake8 --config flake8.conf
+```
+
+To run tests, go to the respective source code directory for the application and run:
+```bash
+$ pytest -vs
+```
+
+## Directories
+
+There are three separate directories for the three separate applications; Faststamps app, Catalogue API and Collection API. See the respective README.md file for each application:
 
  * [stamp-catalogue-api/README.md](stamp-catalogue-api/README.md).
  * [stamp-collection-api/README.md](stamp-collection-api/README.md).
