@@ -57,6 +57,8 @@ def startup_event():
             # We replace all np.NAN with an empty string "" and create a multindex
             # consisting of the stamp type, Yt no and variant.
             db = db.replace({np.NaN:""})
+            # Add URL column
+            db["url"] = db[["type-fr", "id-yt-no", "id-yt-var"]].apply(lambda x: f"stamps/{x[0]}-{x[1]}-{x[2]}" if x[2] else f"stamps/{x[0]}-{x[1]}", axis=1)
             indexed_db = db.set_index(["type-fr", "id-yt-no", "id-yt-var"])
             indexed_db = indexed_db.sort_index()
             print(indexed_db.loc[("Poste", "1", "")].to_dict)
@@ -180,8 +182,11 @@ def get_stamp(response: Response, stamp_id: str = Path(None, description="""`sta
                                                                             format T-N-V, where T
                                                                             is type, N is the
                                                                             Yvert-Tellier catalogue
-                                                                            number.""")):
-    """Return the stamp with the given `stamp_id`."""
+                                                                            number. Note that it may
+                                                                            contain whitespaces.
+                                                                            E.g. '/stamps/Pour la
+                                                                            poste Aérienne-65'""")):
+    """Return the stamp with the given `stamp_id`i."""
     global indexed_db
     # First we check that we have a valid stamp_id
     items = stamp_id.split("-")
@@ -206,6 +211,8 @@ def get_stamp(response: Response, stamp_id: str = Path(None, description="""`sta
         d["id"] = {"yt-no": yt_no,
                    "yt-variant": yt_variant,
                    "type": yt_type}
+        # Add the URL to the stamp
+        d["url"] = f"stamps/{stamp_id}"
         # Get all variants of the stamp
         df = indexed_db.loc[(yt_type, yt_no)]
         variants = df.to_dict('index')
