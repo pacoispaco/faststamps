@@ -1,5 +1,6 @@
 from fastapi import FastAPI, status, Request, Response, Path, Query, Header
 from typing import Optional
+from dotenv import load_dotenv
 import pandas as pd
 import numpy as np
 import os.path
@@ -11,11 +12,15 @@ This is a simple API for retrieving information on stamps in a stamp catalogue.
 """
 
 
-# Constants
+load_dotenv()
+
+# Constants and environment variables
 VERSION = "0.0.1"
-STAMP_CATALOGUE_CSV_FILE = "./french-stamps.csv"
+STAMP_CATALOGUE_CSV_FILE = os.environ.get("STAMP_CATALOGUE_CSV_FILE")
 
 # Globals. :-# OMG! What did I do!?
+# These "databases" are simply Pandas Dataframes. One holds the stamps CSV file and the other simply
+# is an indexed version of the former.
 db = None
 indexed_db = None
 

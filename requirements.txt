@@ -3,5 +3,6 @@ uvicorn
 pandas
 tinydb
 requests
+python-dotenv
 pytest
 flake8
