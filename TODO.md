@@ -7,6 +7,7 @@ Currently the API only supports a single catalogue. The catalogue CSV file to us
 - [x] Specify the stamp catalog file to use via a config file / environment variable.
 - [ ] Move the database (reading of the catalogue CSV file) to a separate file/module.
 - [ ] Add proper logging.
+- [ ] Document the catalogue CSV file format (as a intersystem data transfer format).
 - [ ] Make the API support multiple stamp catalogues. This means API rewrite and redesign.
 - [ ] Make it possible to specify and/or add (load) stamp catalogues via the API. Also to download them as CSV-files.
 - [ ] Support metadata on the stamp cataloges, i.e. name, source etc.
