@@ -2,7 +2,7 @@
 
 # Faststamps app
 
-Faststamps is a [responsive web-application](https://en.wikipedia.org/wiki/Responsive_web_design) for managing a stamp collection. This is a sandbox project for trying out [FastAPI](https://fastapi.tiangolo.com/) & [HTMX](https://htmx.org/) in a tiny micro-service based system, and also for trying out some new technology and ideas.
+Faststamps is a [responsive web-application](https://en.wikipedia.org/wiki/Responsive_web_design) for managing a stamp collection. This is a sandbox project for trying out [FastAPI](https://fastapi.tiangolo.com/) & [HTMX](https://htmx.org/) in a tiny micro-service based system, and also for trying out some new technology and ideas. If you happen to stumble over this repo, please note it is far from a "1.0 release" and I only work on it sporadically.
 
 Since it is a responsive web-application, you can use it in your mobile phone to keep track of your stamp collection.
 
