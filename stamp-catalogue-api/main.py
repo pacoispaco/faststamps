@@ -1,4 +1,5 @@
 from fastapi import FastAPI, status, Request, Response, Path, Query, Header
+from fastapi.responses import FileResponse
 from typing import Optional
 from dotenv import load_dotenv
 import pandas as pd
@@ -11,12 +12,13 @@ description = """
 This is a simple API for retrieving information on stamps in a stamp catalogue.
 """
 
-
+# Load environment variables from the ".env" filei, unless we have real environent variables.
 load_dotenv()
 
 # Constants and environment variables
 VERSION = "0.0.1"
 STAMP_CATALOGUE_CSV_FILE = os.environ.get("STAMP_CATALOGUE_CSV_FILE")
+STAMP_CATALOGUE_IMAGES_DIR = os.environ.get("STAMP_CATALOGUE_IMAGES_DIR")
 
 # Globals. :-# OMG! What did I do!?
 # These "databases" are simply Pandas Dataframes. One holds the stamps CSV file and the other simply
@@ -176,8 +178,6 @@ centime".
     if stamp_type is not None:
         types = stamp_type.split(',')
         stamps = stamps[stamps["type-fr"].isin(types)]
-    # I should add a column with the URL to each individual stamp and to the URL for the image of
-    # each individual stamp
     return {"count": len(stamps.index),
             "stamps": stamps.to_dict(orient='records')}
 
@@ -191,7 +191,7 @@ def get_stamp(response: Response, stamp_id: str = Path(None, description="""`sta
                                                                             contain whitespaces.
                                                                             E.g. '/stamps/Pour la
                                                                             poste Aérienne-65'""")):
-    """Return the stamp with the given `stamp_id`i."""
+    """Return the stamp with the given `stamp_id`."""
     global indexed_db
     # First we check that we have a valid stamp_id
     items = stamp_id.split("-")
@@ -208,7 +208,7 @@ def get_stamp(response: Response, stamp_id: str = Path(None, description="""`sta
         print("yt_type: '%s'" % (yt_type))
         print("yt_no: '%s'" % (yt_no))
         print("yt_variant: '%s'" % (yt_variant))
-        # Get the stamp (Pandas Series)
+        # Get the stamp
         stamp = indexed_db.loc[(yt_type, yt_no, yt_variant)]
         print (stamp)
         d = stamp.to_dict()
@@ -235,13 +235,50 @@ def get_stamp(response: Response, stamp_id: str = Path(None, description="""`sta
         return None
 
 
-@app.get("/stamps/{yt}/image", status_code=status.HTTP_200_OK, tags=["stamps"])
-def get_stamp_image(response: Response, yt: str = Path(None, description="""`yt` is the
+@app.get("/stamps/{stamp_id}/image", status_code=status.HTTP_200_OK, tags=["stamps"])
+def get_stamp_image(response: Response, stamp_id: str = Path(None, description="""`stamp_id` is a unique
+                                                                            id of the stamp in the
+                                                                            format T-N-V, where T
+                                                                            is type, N is the
                                                                             Yvert-Tellier catalogue
-                                                                            number that identifies
-                                                                            a specific stamp.""")):
-    """Return the image of the stamp with the given Yvert-Tellier catalogue number `yt`."""
-    pass
+                                                                            number. Note that it may
+                                                                            contain whitespaces.
+                                                                            E.g. '/stamps/Pour la
+                                                                            poste Aérienne-65'""")):
+    """Return the image of the stamp with the given `stamp_id`."""
+    global indexed_db
+    if os.path.exists(STAMP_CATALOGUE_IMAGES_DIR):
+        # First we check that we have a valid stamp_id
+        items = stamp_id.split("-")
+        if len(items) < 2 or len (items) > 3:
+            response.status_code = status.HTTP_404_NOT_FOUND
+            return None
+        elif len(items) == 2:
+            yt_type, yt_no = items
+            yt_variant = ""
+        else: # len(items) == 3:
+            yt_type, yt_no, yt_variant = items
+        # Now we look up the stamp
+        try:
+            print("yt_type: '%s'" % (yt_type))
+            print("yt_no: '%s'" % (yt_no))
+            print("yt_variant: '%s'" % (yt_variant))
+            # Get the stamp
+            stamp = indexed_db.loc[(yt_type, yt_no, yt_variant)]
+            print (stamp)
+            d = stamp.to_dict()
+            print("Scoobydoo")
+            print(os.path.join(STAMP_CATALOGUE_IMAGES_DIR))
+            print("large")
+            print(d["image/jpeg"])
+            image_path = (os.path.join(STAMP_CATALOGUE_IMAGES_DIR, d["image/jpeg"]))
+            print(os.path.join(STAMP_CATALOGUE_IMAGES_DIR, d["image/jpeg"]))
+            return FileResponse(image_path, media_type="image/jpeg")
+
+        except KeyError:
+            response.status_code = status.HTTP_404_NOT_FOUND
+            return None
+
 
 
 @app.get("/stamp_titles", status_code=status.HTTP_200_OK, tags=["stamp attributes"])
