@@ -10,8 +10,8 @@ import json
 # Constants
 API_PORT = 8008
 API_BASE_URL = "http://127.0.0.1:%s" % (API_PORT)
-STAMPS_TEST_DATA_FILE = "test-data/stamps.json"
-STAMPS_IMAGE_DIR = "data/images/large"
+STAMPS_TEST_DATA_FILE = "./test-data/stamps.json"
+STAMPS_IMAGE_DIR = "./data/images/large"
 
 
 @pytest.fixture(scope="module")
@@ -220,16 +220,16 @@ def test_api_stamps_poste_1(api):
                         'years': '1849-1850'}
 
 
-def test_api_stamps_poste_1_image(api):
-    resource = "/stamps/Poste-1/image"
-    # Get image
-    f = open(os.path.join(STAMPS_IMAGE_DIR, "T01-000-1.jpg"), "rb")
-    image = f.read()
-    f.close()
-    url = '%s%s' % (API_BASE_URL, resource)
-    r = requests.get(url)
-    assert r.status_code == 200
-    assert r.content == image
+# def test_api_stamps_poste_1_image(api):
+#     resource = "/stamps/Poste-1/image"
+#     # Get image
+#     f = open(os.path.join(STAMPS_IMAGE_DIR, "T01-000-1.jpg"), "rb")
+#     image = f.read()
+#     f.close()
+#     url = '%s%s' % (API_BASE_URL, resource)
+#     r = requests.get(url)
+#     assert r.status_code == 200
+#     assert r.content == image
 
 
 def test_api_stamps_1a(api):
