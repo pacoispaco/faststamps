@@ -231,6 +231,7 @@ def test_api_stamps_poste_1_image(api):
     assert r.status_code == 200
     assert r.content == image
 
+
 def test_api_stamps_1a(api):
     resource = "/stamps/Poste-1-a"
     url = '%s%s' % (API_BASE_URL, resource)
