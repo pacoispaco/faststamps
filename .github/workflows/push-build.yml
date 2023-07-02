@@ -15,11 +15,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # Assume Python 3.X is installed and install Python requirements
-      - name: Install Python requirements
-        run: |
-            python --version
-            pip install -r requirements.txt
+      # Set up Python
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10
 
       # Do flake8 linting
       - name: Run flake8
