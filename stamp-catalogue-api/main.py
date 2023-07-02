@@ -81,8 +81,8 @@ def startup_event():
                               else f"stamps/{x[0]}-{x[1]}", axis=1)
             indexed_db = db.set_index(["type-fr", "id-yt-no", "id-yt-var"])
             indexed_db = indexed_db.sort_index()
-            print(indexed_db.loc[("Poste", "1", "")].to_dict)
-            print(indexed_db.loc[("Poste", "1", "a")].to_dict)
+#            print(indexed_db.loc[("Poste", "1", "")].to_dict)
+#            print(indexed_db.loc[("Poste", "1", "a")].to_dict)
 
 
 @app.on_event("shutdown")
@@ -94,7 +94,7 @@ async def shutdown():
 def api_root_resource(request: Request):
     """The root resource. Returns the name of this API and an URL where the OpenAPI specification
        of this API can be found."""
-    print(request.url)
+#    print(request.url)
     return {"name": "Faststamps Catalogue API.",
             "version": settings.VERSION,
             "openapi-specification": str(request.url) + "docs",
@@ -176,7 +176,7 @@ centime".
             stamps = stamps[stamps["title-en"] == title]
     if issued is not None:
         issued_years = [item for item in issued.split(',')]
-        print(issued_years)
+#        print(issued_years)
         stamps = stamps[stamps["issued"].isin(issued_years)]
     if color is not None:
         colors = color.split(',')
@@ -220,12 +220,12 @@ def get_stamp(response: Response, stamp_id: str = Path(None, description="""`sta
         yt_type, yt_no, yt_variant = items
     # Now we look up the stamp
     try:
-        print("yt_type: '%s'" % (yt_type))
-        print("yt_no: '%s'" % (yt_no))
-        print("yt_variant: '%s'" % (yt_variant))
+#        print("yt_type: '%s'" % (yt_type))
+#        print("yt_no: '%s'" % (yt_no))
+#        print("yt_variant: '%s'" % (yt_variant))
         # Get the stamp
         stamp = indexed_db.loc[(yt_type, yt_no, yt_variant)]
-        print(stamp)
+#        print(stamp)
         d = stamp.to_dict()
         # Add the stamp id attributes to the stamp
         d["id"] = {"yt-no": yt_no,
@@ -241,8 +241,8 @@ def get_stamp(response: Response, stamp_id: str = Path(None, description="""`sta
         else:
             d["variants"] = variants
 
-        import pprint
-        pprint.pprint(d)
+#        import pprint
+#        pprint.pprint(d)
         return d
 
     except KeyError:
@@ -276,19 +276,19 @@ def get_stamp_image(response: Response, stamp_id: str = Path(None, description="
             yt_type, yt_no, yt_variant = items
         # Now we look up the stamp
         try:
-            print("yt_type: '%s'" % (yt_type))
-            print("yt_no: '%s'" % (yt_no))
-            print("yt_variant: '%s'" % (yt_variant))
+#            print("yt_type: '%s'" % (yt_type))
+#            print("yt_no: '%s'" % (yt_no))
+#            print("yt_variant: '%s'" % (yt_variant))
             # Get the stamp
             stamp = indexed_db.loc[(yt_type, yt_no, yt_variant)]
-            print(stamp)
+#            print(stamp)
             d = stamp.to_dict()
-            print("Scoobydoo")
-            print(os.path.join(settings.STAMP_CATALOGUE_IMAGES_DIR))
-            print("large")
-            print(d["image/jpeg"])
+#            print("Scoobydoo")
+#            print(os.path.join(settings.STAMP_CATALOGUE_IMAGES_DIR))
+#            print("large")
+#            print(d["image/jpeg"])
             image_path = (os.path.join(settings.STAMP_CATALOGUE_IMAGES_DIR, d["image/jpeg"]))
-            print(os.path.join(settings.STAMP_CATALOGUE_IMAGES_DIR, d["image/jpeg"]))
+#            print(os.path.join(settings.STAMP_CATALOGUE_IMAGES_DIR, d["image/jpeg"]))
             return FileResponse(image_path, media_type="image/jpeg")
 
         except KeyError:

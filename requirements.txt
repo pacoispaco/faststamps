@@ -1,4 +1,5 @@
 fastapi
+httpx # Needed by fastapi.testclient
 uvicorn
 pandas
 tinydb
