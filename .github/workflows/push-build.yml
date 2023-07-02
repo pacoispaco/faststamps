@@ -1,0 +1,32 @@
+name: push-build
+
+on:
+  push:
+    branches: [ master ]
+
+  # Enables this workflow to be manually run from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  push-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      # Assume Python 3.X is installed and install Python requirements
+      - name: Install Python requirements
+        run: |
+            python --version
+            pip install -r requirements.txt
+
+      # Do flake8 linting
+      - name: Run flake8
+        run: flake8 --config flake8.conf
+
+      # Run Pytest tests for stamp-catalogue-api
+      - name: Run pytest tests for stamp-catalogue-api
+        run: |
+            cd stamp-catalogue-api
+            pytest -vs -k 'not api_stamps_poste_1_image'
