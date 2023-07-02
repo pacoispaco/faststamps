@@ -15,17 +15,17 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # Set up Python
       - name: Install Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      # Do flake8 linting
+      - name: Install Python requirements
+        run: pip install -r requirements.txt
+
       - name: Run flake8
         run: flake8 --config flake8.conf
 
-      # Run Pytest tests for stamp-catalogue-api
       - name: Run pytest tests for stamp-catalogue-api
         run: |
             cd stamp-catalogue-api
