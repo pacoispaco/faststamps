@@ -220,12 +220,12 @@ def get_stamp(response: Response, stamp_id: str = Path(None, description="""`sta
         yt_type, yt_no, yt_variant = items
     # Now we look up the stamp
     try:
-#        print("yt_type: '%s'" % (yt_type))
-#        print("yt_no: '%s'" % (yt_no))
-#        print("yt_variant: '%s'" % (yt_variant))
+        # print("yt_type: '%s'" % (yt_type))
+        # print("yt_no: '%s'" % (yt_no))
+        # print("yt_variant: '%s'" % (yt_variant))
         # Get the stamp
         stamp = indexed_db.loc[(yt_type, yt_no, yt_variant)]
-#        print(stamp)
+        # print(stamp)
         d = stamp.to_dict()
         # Add the stamp id attributes to the stamp
         d["id"] = {"yt-no": yt_no,
@@ -241,8 +241,8 @@ def get_stamp(response: Response, stamp_id: str = Path(None, description="""`sta
         else:
             d["variants"] = variants
 
-#        import pprint
-#        pprint.pprint(d)
+        # import pprint
+        # pprint.pprint(d)
         return d
 
     except KeyError:
@@ -276,19 +276,18 @@ def get_stamp_image(response: Response, stamp_id: str = Path(None, description="
             yt_type, yt_no, yt_variant = items
         # Now we look up the stamp
         try:
-#            print("yt_type: '%s'" % (yt_type))
-#            print("yt_no: '%s'" % (yt_no))
-#            print("yt_variant: '%s'" % (yt_variant))
+            # print("yt_type: '%s'" % (yt_type))
+            # print("yt_no: '%s'" % (yt_no))
+            # print("yt_variant: '%s'" % (yt_variant))
             # Get the stamp
             stamp = indexed_db.loc[(yt_type, yt_no, yt_variant)]
-#            print(stamp)
+            # print(stamp)
             d = stamp.to_dict()
-#            print("Scoobydoo")
-#            print(os.path.join(settings.STAMP_CATALOGUE_IMAGES_DIR))
-#            print("large")
-#            print(d["image/jpeg"])
+            # print(os.path.join(settings.STAMP_CATALOGUE_IMAGES_DIR))
+            # print("large")
+            # print(d["image/jpeg"])
             image_path = (os.path.join(settings.STAMP_CATALOGUE_IMAGES_DIR, d["image/jpeg"]))
-#            print(os.path.join(settings.STAMP_CATALOGUE_IMAGES_DIR, d["image/jpeg"]))
+            # print(os.path.join(settings.STAMP_CATALOGUE_IMAGES_DIR, d["image/jpeg"]))
             return FileResponse(image_path, media_type="image/jpeg")
 
         except KeyError:
