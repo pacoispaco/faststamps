@@ -1,4 +1,4 @@
-![Flake8 linting](https://github.com/pacoispaco/faststamps/actions/workflows/flake8.yml/badge.svg) ![Pytest unit tests](https://github.com/pacoispaco/faststamps/actions/workflows/pytest.yml/badge.svg)
+![Linting and tests](https://github.com/pacoispaco/faststamps/actions/workflows/push-build.yml/badge.svg)
 
 # Faststamps app
 
