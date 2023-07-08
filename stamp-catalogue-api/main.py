@@ -197,15 +197,14 @@ centime".
 
 
 @app.get("/stamps/{stamp_id}", status_code=status.HTTP_200_OK, tags=["stamps"])
-def get_stamp(response: Response, stamp_id: str = Path(None, description="""`stamp_id` is a unique
-                                                                            id of the stamp in the
-                                                                            format T-N-V, where T
-                                                                            is type, N is the
-                                                                            Yvert-Tellier catalogue
-                                                                            number. Note that it may
-                                                                            contain whitespaces.
-                                                                            E.g. '/stamps/Pour la
-                                                                            poste Aérienne-65'""")):
+def get_stamp(response: Response, stamp_id: str = Path(description="""`stamp_id` is a unique id of
+                                                                       the stamp in the format
+                                                                       T-N-V, where T is type, N is
+                                                                       the Yvert-Tellier catalogue
+                                                                       number. Note that it may
+                                                                       contain whitespaces. E.g.
+                                                                       '/stamps/Pour la poste
+                                                                       Aérienne-65'""")):
     """Return the stamp with the given `stamp_id`."""
     global indexed_db
     # First we check that we have a valid stamp_id
@@ -251,16 +250,15 @@ def get_stamp(response: Response, stamp_id: str = Path(None, description="""`sta
 
 
 @app.get("/stamps/{stamp_id}/image", status_code=status.HTTP_200_OK, tags=["stamps"])
-def get_stamp_image(response: Response, stamp_id: str = Path(None, description="""`stamp_id` is a
-                                                                            unique id of the stamp
-                                                                            in the format T-N-V,
-                                                                            where T is type, N is
-                                                                            the Yvert-Tellier
-                                                                            catalogue number. Note
-                                                                            that it may contain
-                                                                            whitespaces. E.g.
-                                                                            '/stamps/Pour la poste
-                                                                            Aérienne-65'""")):
+def get_stamp_image(response: Response, stamp_id: str = Path(description="""`stamp_id` is a unique
+                                                                            id of the stamp in the
+                                                                            format T-N-V, where T is
+                                                                            type, N is the Yvert-
+                                                                            Tellier catalogue
+                                                                            number. Note that it may
+                                                                            contain whitespaces.
+                                                                            E.g. '/stamps/Pour la
+                                                                            poste Aérienne-65'""")):
     """Return the image of the stamp with the given `stamp_id`."""
     global indexed_db
     if os.path.exists(settings.STAMP_CATALOGUE_IMAGES_DIR):
