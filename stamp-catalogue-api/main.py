@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     STAMP_CATALOGUE_CSV_FILE: str = "./data/french-stamps.csv"
     STAMP_CATALOGUE_IMAGES_DIR: str = "./data/images/large"
 
-    class Config:
+    class ConfigDict:
         env_file = ".env"
 
 
