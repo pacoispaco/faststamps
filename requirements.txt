@@ -1,4 +1,4 @@
-fastapi
+fastapi == 0.89.1
 httpx # Needed by fastapi.testclient
 uvicorn
 pandas
