@@ -1,7 +1,7 @@
 from fastapi import FastAPI, status, Request, Response, Path, Query, Header
 from fastapi.responses import FileResponse
 from typing import Optional
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 import pandas as pd
 import numpy as np
 import os.path

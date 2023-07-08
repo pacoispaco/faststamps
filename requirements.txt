@@ -1,7 +1,8 @@
 fastapi == 0.100.0
-httpx # Needed by fastapi.testclient
-uvicorn
-pandas
+httpx == 0.24.1 # Needed by fastapi.testclient
+uvicorn == 0.22.0
+pydantic-settings == 2.0.1
+pandas == 2.0.3
 tinydb
 requests
 python-dotenv
