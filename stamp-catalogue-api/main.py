@@ -156,8 +156,9 @@ async def shutdown():
 
 @app.get("/", tags=["stamps"])
 def api_root_resource(request: Request, response: Response) -> ApiInfo:
-    """The root resource. Returns the name of this API and an URL where the OpenAPI specification
-       of this API can be found."""
+    """The root resource. Returns the name of this API, its version, and an URL where the OpenAPI
+       specification of this API can be found. The version number identifies the implementation
+       version and not the interface version."""
     tic = time.perf_counter_ns()
     result = {"name": "Faststamps Catalogue API.",
               "version": settings.VERSION,
