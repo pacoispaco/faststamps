@@ -28,11 +28,11 @@ def test_api_root(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     assert r.json() == {'name': 'Faststamps Catalogue API.',
                         'version': '0.0.1',
-                        'openapi-specification': f'{API_BASE_URL}/docs',
-                        'health': f'{API_BASE_URL}/health',
-                        'resources': {}}
+                        'openapi_specification': f'{API_BASE_URL}/docs',
+                        'health': f'{API_BASE_URL}/health'}
 
 
 def test_api_stamps(client):
@@ -40,6 +40,7 @@ def test_api_stamps(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     with open(STAMPS_TEST_DATA_FILE) as f:
         data = json.load(f)
     assert r.json() == data
@@ -50,10 +51,12 @@ def test_api_stamps_bad_start_and_count(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 400
+    assert "Server-timing" in r.headers
     resource = "/stamps?count=-1"
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 400
+    assert "Server-timing" in r.headers
 
 
 def test_api_stamps_filter_title(client):
@@ -62,6 +65,7 @@ def test_api_stamps_filter_title(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     assert r.json()["count"] == 116
 
 
@@ -71,6 +75,7 @@ def test_api_stamps_filter_year(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     assert r.json()["count"] == 54
 
 
@@ -80,6 +85,7 @@ def test_api_stamps_filter_color(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     assert r.json()["count"] == 90
 
 
@@ -89,6 +95,7 @@ def test_api_stamps_filter_value(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     assert r.json()["count"] == 32
 
 
@@ -98,6 +105,7 @@ def test_api_stamps_filter_stamp_type(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     assert r.json()["count"] == 127
 
 
@@ -111,6 +119,7 @@ def test_api_stamps_combined_filter(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     assert r.json()["count"] == 3
 
 
@@ -119,101 +128,109 @@ def test_api_stamps_poste_1(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
-    assert r.json() == {'color-en': 'Yellow bistre',
-                        'color-fr': 'bistre-jaune',
-                        'description-fr': 'Typographie. Papier teinté.',
-                        'id': {'type': 'Poste', 'yt-no': '1', 'yt-variant': ''},
+    assert "Server-timing" in r.headers
+    assert r.json() == {'color_en': 'Yellow bistre',
+                        'color_fr': 'bistre-jaune',
+                        'description_fr': 'Typographie. Papier teinté.',
+                        'id': {'type': 'Poste', 'yt_no': '1', 'yt_variant': ''},
                         'url': 'stamps/Poste-1',
-                        'image/jpeg': 'T01-000-1.jpg',
+                        'image': 'T01-000-1.jpg',
                         'issued': '1850',
-                        'perforated-dimensions': 'No',
-                        'title-en': 'Ceres',
-                        'title-fr': 'Cérès.',
-                        'value-en': '10 French centime',
-                        'value-fr': '10 c.',
-                        'variants': {'': {'color-en': 'Yellow bistre',
-                                          'color-fr': 'bistre-jaune',
-                                          'description-fr': 'Typographie. Papier teinté.',
-                                          'image/jpeg': 'T01-000-1.jpg',
+                        'perforated_dimensions': 'No',
+                        'title_en': 'Ceres',
+                        'title_fr': 'Cérès.',
+                        'value_en': '10 French centime',
+                        'value_fr': '10 c.',
+                        'variants': {'': {'color_en': 'Yellow bistre',
+                                          'color_fr': 'bistre-jaune',
+                                          'description_fr': 'Typographie. Papier teinté.',
+                                          'id': {'type': 'Poste', 'yt_no': '1', 'yt_variant': ''},
+                                          'image': 'T01-000-1.jpg',
                                           'url': 'stamps/Poste-1',
                                           'issued': '1850',
-                                          'perforated-dimensions': 'No',
-                                          'title-en': 'Ceres',
-                                          'title-fr': 'Cérès.',
-                                          'value-en': '10 French centime',
-                                          'value-fr': '10 c.',
+                                          'perforated_dimensions': 'No',
+                                          'title_en': 'Ceres',
+                                          'title_fr': 'Cérès.',
+                                          'value_en': '10 French centime',
+                                          'value_fr': '10 c.',
                                           'years': '1849-1850'},
-                                     'a': {'color-en': 'Bistre brown',
-                                           'color-fr': 'bistre-brun',
-                                           'description-fr': 'Typographie. Papier teinté.',
-                                           'image/jpeg': 'T01-000-1.jpg',
+                                     'a': {'color_en': 'Bistre brown',
+                                           'color_fr': 'bistre-brun',
+                                           'description_fr': 'Typographie. Papier teinté.',
+                                           'id': {'type': 'Poste', 'yt_no': '1', 'yt_variant': 'a'},
+                                           'image': 'T01-000-1.jpg',
                                            'url': 'stamps/Poste-1-a',
                                            'issued': '1850',
-                                           'perforated-dimensions': 'No',
-                                           'title-en': 'Ceres',
-                                           'title-fr': 'Cérès.',
-                                           'value-en': '10 French centime',
-                                           'value-fr': '10 c.',
+                                           'perforated_dimensions': 'No',
+                                           'title_en': 'Ceres',
+                                           'title_fr': 'Cérès.',
+                                           'value_en': '10 French centime',
+                                           'value_fr': '10 c.',
                                            'years': '1849-1850'},
-                                     'b': {'color-en': '',
-                                           'color-fr': 'bistre verdâtre',
-                                           'description-fr': 'Typographie. Papier teinté.',
-                                           'image/jpeg': 'T01-000-1.jpg',
+                                     'b': {'color_en': '',
+                                           'color_fr': 'bistre verdâtre',
+                                           'description_fr': 'Typographie. Papier teinté.',
+                                           'id': {'type': 'Poste', 'yt_no': '1', 'yt_variant': 'b'},
+                                           'image': 'T01-000-1.jpg',
                                            'url': 'stamps/Poste-1-b',
                                            'issued': '1850',
-                                           'perforated-dimensions': 'No',
-                                           'title-en': '',
-                                           'title-fr': 'Cérès.',
-                                           'value-en': '',
-                                           'value-fr': '10 c.',
+                                           'perforated_dimensions': 'No',
+                                           'title_en': '',
+                                           'title_fr': 'Cérès.',
+                                           'value_en': '',
+                                           'value_fr': '10 c.',
                                            'years': '1849-1850'},
-                                     'c': {'color-en': '',
-                                           'color-fr': 'bistre verdâtre foncé',
-                                           'description-fr': 'Typographie. Papier teinté.',
-                                           'image/jpeg': 'T01-000-1.jpg',
+                                     'c': {'color_en': '',
+                                           'color_fr': 'bistre verdâtre foncé',
+                                           'description_fr': 'Typographie. Papier teinté.',
+                                           'id': {'type': 'Poste', 'yt_no': '1', 'yt_variant': 'c'},
+                                           'image': 'T01-000-1.jpg',
                                            'url': 'stamps/Poste-1-c',
                                            'issued': '1850',
-                                           'perforated-dimensions': 'No',
-                                           'title-en': '',
-                                           'title-fr': 'Cérès.',
-                                           'value-en': '',
-                                           'value-fr': '10 c.',
+                                           'perforated_dimensions': 'No',
+                                           'title_en': '',
+                                           'title_fr': 'Cérès.',
+                                           'value_en': '',
+                                           'value_fr': '10 c.',
                                            'years': '1849-1850'},
-                                     'd': {'color-en': '',
-                                           'color-fr': 'bistre-jaune Tête-bêche',
-                                           'description-fr': 'Typographie. Papier teinté.',
-                                           'image/jpeg': 'T01-000-1.jpg',
+                                     'd': {'color_en': '',
+                                           'color_fr': 'bistre-jaune Tête-bêche',
+                                           'description_fr': 'Typographie. Papier teinté.',
+                                           'id': {'type': 'Poste', 'yt_no': '1', 'yt_variant': 'd'},
+                                           'image': 'T01-000-1.jpg',
                                            'url': 'stamps/Poste-1-d',
                                            'issued': '1850',
-                                           'perforated-dimensions': 'No',
-                                           'title-en': '',
-                                           'title-fr': 'Cérès.',
-                                           'value-en': '',
-                                           'value-fr': '10 et 10 c.',
+                                           'perforated_dimensions': 'No',
+                                           'title_en': '',
+                                           'title_fr': 'Cérès.',
+                                           'value_en': '',
+                                           'value_fr': '10 et 10 c.',
                                            'years': '1849-1850'},
-                                     'e': {'color-en': '',
-                                           'color-fr': 'bistre verdâtre Tête-bêche',
-                                           'description-fr': 'Typographie. Papier teinté.',
-                                           'image/jpeg': 'T01-000-1.jpg',
+                                     'e': {'color_en': '',
+                                           'color_fr': 'bistre verdâtre Tête-bêche',
+                                           'description_fr': 'Typographie. Papier teinté.',
+                                           'id': {'type': 'Poste', 'yt_no': '1', 'yt_variant': 'e'},
+                                           'image': 'T01-000-1.jpg',
                                            'url': 'stamps/Poste-1-e',
                                            'issued': '1850',
-                                           'perforated-dimensions': 'No',
-                                           'title-en': '',
-                                           'title-fr': 'Cérès.',
-                                           'value-en': '',
-                                           'value-fr': '10 et 10 c.',
+                                           'perforated_dimensions': 'No',
+                                           'title_en': '',
+                                           'title_fr': 'Cérès.',
+                                           'value_en': '',
+                                           'value_fr': '10 et 10 c.',
                                            'years': '1849-1850'},
-                                     'f': {'color-en': '',
-                                           'color-fr': 'bistre clair Réimpression',
-                                           'description-fr': 'Typographie. Papier teinté.',
-                                           'image/jpeg': 'T01-000-1.jpg',
+                                     'f': {'color_en': '',
+                                           'color_fr': 'bistre clair Réimpression',
+                                           'description_fr': 'Typographie. Papier teinté.',
+                                           'id': {'type': 'Poste', 'yt_no': '1', 'yt_variant': 'f'},
+                                           'image': 'T01-000-1.jpg',
                                            'url': 'stamps/Poste-1-f',
                                            'issued': '1850',
-                                           'perforated-dimensions': 'No',
-                                           'title-en': '',
-                                           'title-fr': 'Cérès.',
-                                           'value-en': '',
-                                           'value-fr': '10 c.',
+                                           'perforated_dimensions': 'No',
+                                           'title_en': '',
+                                           'title_fr': 'Cérès.',
+                                           'value_en': '',
+                                           'value_fr': '10 c.',
                                            'years': '1849-1850'}},
                         'years': '1849-1850'}
 
@@ -227,6 +244,7 @@ def test_api_stamps_poste_1_image(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     assert r.content == image
 
 
@@ -235,101 +253,109 @@ def test_api_stamps_1a(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
-    assert r.json() == {'color-en': 'Bistre brown',
-                        'color-fr': 'bistre-brun',
-                        'description-fr': 'Typographie. Papier teinté.',
-                        'id': {'type': 'Poste', 'yt-no': '1', 'yt-variant': 'a'},
+    assert "Server-timing" in r.headers
+    assert r.json() == {'color_en': 'Bistre brown',
+                        'color_fr': 'bistre-brun',
+                        'description_fr': 'Typographie. Papier teinté.',
+                        'id': {'type': 'Poste', 'yt_no': '1', 'yt_variant': 'a'},
                         'url': 'stamps/Poste-1-a',
-                        'image/jpeg': 'T01-000-1.jpg',
+                        'image': 'T01-000-1.jpg',
                         'issued': '1850',
-                        'perforated-dimensions': 'No',
-                        'title-en': 'Ceres',
-                        'title-fr': 'Cérès.',
-                        'value-en': '10 French centime',
-                        'value-fr': '10 c.',
-                        'variants': {'': {'color-en': 'Yellow bistre',
-                                          'color-fr': 'bistre-jaune',
-                                          'description-fr': 'Typographie. Papier teinté.',
-                                          'image/jpeg': 'T01-000-1.jpg',
+                        'perforated_dimensions': 'No',
+                        'title_en': 'Ceres',
+                        'title_fr': 'Cérès.',
+                        'value_en': '10 French centime',
+                        'value_fr': '10 c.',
+                        'variants': {'': {'color_en': 'Yellow bistre',
+                                          'color_fr': 'bistre-jaune',
+                                          'description_fr': 'Typographie. Papier teinté.',
+                                          'id': {'type': 'Poste', 'yt_no': '1', 'yt_variant': ''},
+                                          'image': 'T01-000-1.jpg',
                                           'url': 'stamps/Poste-1',
                                           'issued': '1850',
-                                          'perforated-dimensions': 'No',
-                                          'title-en': 'Ceres',
-                                          'title-fr': 'Cérès.',
-                                          'value-en': '10 French centime',
-                                          'value-fr': '10 c.',
+                                          'perforated_dimensions': 'No',
+                                          'title_en': 'Ceres',
+                                          'title_fr': 'Cérès.',
+                                          'value_en': '10 French centime',
+                                          'value_fr': '10 c.',
                                           'years': '1849-1850'},
-                                     'a': {'color-en': 'Bistre brown',
-                                           'color-fr': 'bistre-brun',
-                                           'description-fr': 'Typographie. Papier teinté.',
-                                           'image/jpeg': 'T01-000-1.jpg',
+                                     'a': {'color_en': 'Bistre brown',
+                                           'color_fr': 'bistre-brun',
+                                           'description_fr': 'Typographie. Papier teinté.',
+                                           'id': {'type': 'Poste', 'yt_no': '1', 'yt_variant': 'a'},
+                                           'image': 'T01-000-1.jpg',
                                            'url': 'stamps/Poste-1-a',
                                            'issued': '1850',
-                                           'perforated-dimensions': 'No',
-                                           'title-en': 'Ceres',
-                                           'title-fr': 'Cérès.',
-                                           'value-en': '10 French centime',
-                                           'value-fr': '10 c.',
+                                           'perforated_dimensions': 'No',
+                                           'title_en': 'Ceres',
+                                           'title_fr': 'Cérès.',
+                                           'value_en': '10 French centime',
+                                           'value_fr': '10 c.',
                                            'years': '1849-1850'},
-                                     'b': {'color-en': '',
-                                           'color-fr': 'bistre verdâtre',
-                                           'description-fr': 'Typographie. Papier teinté.',
-                                           'image/jpeg': 'T01-000-1.jpg',
+                                     'b': {'color_en': '',
+                                           'color_fr': 'bistre verdâtre',
+                                           'description_fr': 'Typographie. Papier teinté.',
+                                           'id': {'type': 'Poste', 'yt_no': '1', 'yt_variant': 'b'},
+                                           'image': 'T01-000-1.jpg',
                                            'url': 'stamps/Poste-1-b',
                                            'issued': '1850',
-                                           'perforated-dimensions': 'No',
-                                           'title-en': '',
-                                           'title-fr': 'Cérès.',
-                                           'value-en': '',
-                                           'value-fr': '10 c.',
+                                           'perforated_dimensions': 'No',
+                                           'title_en': '',
+                                           'title_fr': 'Cérès.',
+                                           'value_en': '',
+                                           'value_fr': '10 c.',
                                            'years': '1849-1850'},
-                                     'c': {'color-en': '',
-                                           'color-fr': 'bistre verdâtre foncé',
-                                           'description-fr': 'Typographie. Papier teinté.',
-                                           'image/jpeg': 'T01-000-1.jpg',
+                                     'c': {'color_en': '',
+                                           'color_fr': 'bistre verdâtre foncé',
+                                           'description_fr': 'Typographie. Papier teinté.',
+                                           'id': {'type': 'Poste', 'yt_no': '1', 'yt_variant': 'c'},
+                                           'image': 'T01-000-1.jpg',
                                            'url': 'stamps/Poste-1-c',
                                            'issued': '1850',
-                                           'perforated-dimensions': 'No',
-                                           'title-en': '',
-                                           'title-fr': 'Cérès.',
-                                           'value-en': '',
-                                           'value-fr': '10 c.',
+                                           'perforated_dimensions': 'No',
+                                           'title_en': '',
+                                           'title_fr': 'Cérès.',
+                                           'value_en': '',
+                                           'value_fr': '10 c.',
                                            'years': '1849-1850'},
-                                     'd': {'color-en': '',
-                                           'color-fr': 'bistre-jaune Tête-bêche',
-                                           'description-fr': 'Typographie. Papier teinté.',
-                                           'image/jpeg': 'T01-000-1.jpg',
+                                     'd': {'color_en': '',
+                                           'color_fr': 'bistre-jaune Tête-bêche',
+                                           'description_fr': 'Typographie. Papier teinté.',
+                                           'id': {'type': 'Poste', 'yt_no': '1', 'yt_variant': 'd'},
+                                           'image': 'T01-000-1.jpg',
                                            'url': 'stamps/Poste-1-d',
                                            'issued': '1850',
-                                           'perforated-dimensions': 'No',
-                                           'title-en': '',
-                                           'title-fr': 'Cérès.',
-                                           'value-en': '',
-                                           'value-fr': '10 et 10 c.',
+                                           'perforated_dimensions': 'No',
+                                           'title_en': '',
+                                           'title_fr': 'Cérès.',
+                                           'value_en': '',
+                                           'value_fr': '10 et 10 c.',
                                            'years': '1849-1850'},
-                                     'e': {'color-en': '',
-                                           'color-fr': 'bistre verdâtre Tête-bêche',
-                                           'description-fr': 'Typographie. Papier teinté.',
-                                           'image/jpeg': 'T01-000-1.jpg',
+                                     'e': {'color_en': '',
+                                           'color_fr': 'bistre verdâtre Tête-bêche',
+                                           'description_fr': 'Typographie. Papier teinté.',
+                                           'id': {'type': 'Poste', 'yt_no': '1', 'yt_variant': 'e'},
+                                           'image': 'T01-000-1.jpg',
                                            'url': 'stamps/Poste-1-e',
                                            'issued': '1850',
-                                           'perforated-dimensions': 'No',
-                                           'title-en': '',
-                                           'title-fr': 'Cérès.',
-                                           'value-en': '',
-                                           'value-fr': '10 et 10 c.',
+                                           'perforated_dimensions': 'No',
+                                           'title_en': '',
+                                           'title_fr': 'Cérès.',
+                                           'value_en': '',
+                                           'value_fr': '10 et 10 c.',
                                            'years': '1849-1850'},
-                                     'f': {'color-en': '',
-                                           'color-fr': 'bistre clair Réimpression',
-                                           'description-fr': 'Typographie. Papier teinté.',
-                                           'image/jpeg': 'T01-000-1.jpg',
+                                     'f': {'color_en': '',
+                                           'color_fr': 'bistre clair Réimpression',
+                                           'description_fr': 'Typographie. Papier teinté.',
+                                           'id': {'type': 'Poste', 'yt_no': '1', 'yt_variant': 'f'},
+                                           'image': 'T01-000-1.jpg',
                                            'url': 'stamps/Poste-1-f',
                                            'issued': '1850',
-                                           'perforated-dimensions': 'No',
-                                           'title-en': '',
-                                           'title-fr': 'Cérès.',
-                                           'value-en': '',
-                                           'value-fr': '10 c.',
+                                           'perforated_dimensions': 'No',
+                                           'title_en': '',
+                                           'title_fr': 'Cérès.',
+                                           'value_en': '',
+                                           'value_fr': '10 c.',
                                            'years': '1849-1850'}},
                         'years': '1849-1850'}
 
@@ -339,6 +365,7 @@ def test_api_stamps_not_found(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 404
+    assert "Server-timing" in r.headers
     assert r.json() is None
 
 
@@ -348,6 +375,7 @@ def test_api_stamp_titles(client):
     # First we test that english titles are returned if no explicit Accept-Languages is requested
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     assert r.headers["Content-Language"] == "en"
     with open("test-data/stamp_titles.json") as f:
         data = json.load(f)
@@ -355,6 +383,7 @@ def test_api_stamp_titles(client):
     # Then we test that english titles are returned if Accept-Languages is set to "en"
     r = client.get(url, headers={"Accept-Language": "en"})
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     assert r.headers["Content-Language"] == "en"
     with open("test-data/stamp_titles.json") as f:
         data = json.load(f)
@@ -362,6 +391,7 @@ def test_api_stamp_titles(client):
     # Then we test that french titles are returned if Accept-Languages is set to "fr"
     r = client.get(url, headers={"Accept-Language": "fr"})
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     assert r.headers["Content-Language"] == "fr"
     with open("test-data/stamp_titles.fr.json") as f:
         data = json.load(f)
@@ -374,11 +404,13 @@ def test_api_stamp_titles_wildcard_search(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     wildcard_count = 2735
     assert r.json()["count"] == wildcard_count
     url = '%s%s' % (API_BASE_URL, "/stamp_titles")
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     assert r.json()["count"] == wildcard_count
 
 
@@ -388,8 +420,9 @@ def test_api_stamp_titles_prefix_search(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     assert r.json()["count"] == 53
-    assert [title.startswith("Ce") for title in r.json()["stamp_titles"]]
+    assert [title.startswith("Ce") for title in r.json()["values"]]
 
 
 def test_api_stamp_titles_suffix_search(client):
@@ -398,8 +431,9 @@ def test_api_stamp_titles_suffix_search(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     assert r.json()["count"] == 12
-    assert [title.endswith("nt") for title in r.json()["stamp_titles"]]
+    assert [title.endswith("nt") for title in r.json()["values"]]
 
 
 def test_api_stamp_titles_combined_prefix_and_suffix_search(client):
@@ -408,8 +442,9 @@ def test_api_stamp_titles_combined_prefix_and_suffix_search(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     assert r.json()["count"] == 39
-    assert [title.startswith("C") and title.endswith("s") for title in r.json()["stamp_titles"]]
+    assert [title.startswith("C") and title.endswith("s") for title in r.json()["values"]]
 
 
 def test_api_stamp_titles_wildcard_search_multiple_stars(client):
@@ -418,6 +453,7 @@ def test_api_stamp_titles_wildcard_search_multiple_stars(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 400
+    assert "Server-timing" in r.headers
     assert r.json() == "Multiple wildcard stars '*' in query is not supported."
 
 
@@ -426,6 +462,7 @@ def test_api_stamp_years(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     with open("test-data/stamp_years.json") as f:
         data = json.load(f)
     assert r.json() == data
@@ -436,6 +473,7 @@ def test_api_stamp_colors(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     with open("test-data/stamp_colors.json") as f:
         data = json.load(f)
     assert r.json() == data
@@ -446,6 +484,7 @@ def test_api_stamp_values(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
+    assert "Server-timing" in r.headers
     with open("test-data/stamp_values.json") as f:
         data = json.load(f)
     assert r.json() == data

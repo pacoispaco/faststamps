@@ -7,7 +7,9 @@ Currently the API only supports a single catalogue. The catalogue CSV file to us
 ### Implementation
 
 - [x] Specify the stamp catalog file to use via a config file / environment variable.
-- [.] Add API typing based on FastAPI BaseModel.
+- [x] Add use of the Server-Timing HTTP header.
+- [x] Add API typing based on Pydantic BaseModel.
+- [ ] Use Pydantic validation on query parameters.
 - [ ] Add proper logging.
 - [ ] Move the database (reading of the catalogue CSV file) to a separate file/module.
 - [ ] Document the catalogue CSV file format (as a intersystem data transfer format).
@@ -26,7 +28,3 @@ Currently the API only supports a single catalogue. The catalogue CSV file to us
 The stamp collection API will initially not have support for multiple users. But eventually it should:
 
 - [ ] Have support for multiple user collections. We should avoid implementing user accounts in this microservice. That should be a separate microservice.
-
-### Deployment
-
-- [ ] Dockerify.
