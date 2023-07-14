@@ -21,7 +21,7 @@ It is intended to be run as three [Docker](https://www.docker.com) containers wi
 
 The total requirements are as follows, but note that the Faststamps app, Catalogue API and Collection API are separate applications and have slightly different dependencies. These are the total dependencies:
 
- * [Python 3.8+](https://www.python.org/) but should probably work with earlier versions too.
+ * [Python 3.10](https://www.python.org/) but should probably work with iPython 3.8+.
  * [FastAPI](https://fastapi.tiangolo.com/).
  * [uvicorn](https://www.uvicorn.org).
  * [HTMX](https://htmx.org/).
