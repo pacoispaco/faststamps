@@ -6,7 +6,7 @@ It has its own requirements.txt file, it's own unit tests and its own Dockerfile
 
 ## Requirements
 
- * [Python 3.10](https://www.python.org/) but should probably work with iPython 3.8+.
+ * [Python 3.10](https://www.python.org/) but should probably work with Python 3.8+.
  * [FastAPI](https://fastapi.tiangolo.com/).
  * [uvicorn](https://www.uvicorn.org).
  * [Pandas](https://pandas.pydata.org/).
