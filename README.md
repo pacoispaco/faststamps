@@ -1,4 +1,5 @@
-![Linting and tests](https://github.com/pacoispaco/faststamps/actions/workflows/lint-and-test.yml/badge.svg)
+![Linting and
+tests](https://github.com/pacoispaco/faststamps/actions/workflows/test-stamp-catalogue-api.yml/badge.svg)
 
 # Faststamps
 

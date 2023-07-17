@@ -1,4 +1,4 @@
-name: lint-and-test
+name: test-stamp-catalogue-api
 
 on:
   push:
