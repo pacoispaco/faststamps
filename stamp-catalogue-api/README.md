@@ -37,7 +37,7 @@ To run flake8 linting:
 stamps-catalogue-api$ flake8 --config flake8.conf
 ```
 
-To run tests, go to the respective source code directory for the application and run:
+To run tests:
 ```bash
 stamps-catalogue-api$ pytest -vs -k 'not api_stamps_poste_1_image'
 ```
@@ -51,7 +51,7 @@ stamps-catalogue-api$ uvicorn main:app --reload
 
 You can then access the API locally at: http://127.0.0.1:8000.
 
-Unit tests are written with Pytest. The unit test program `test_api.py` runs the API on a different port than the default port, so you can have the API running as described above, and run the init tests at the same time. To run the unit tests:
+Unit tests are written with Pytest. To run the unit tests:
 ```
 $ pytest -vs
 ```
