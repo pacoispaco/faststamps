@@ -13,13 +13,40 @@ It has its own requirements.txt file, it's own unit tests and its own Dockerfile
  * [Docker](https://www.docker.com).
  * [Pytest](https://docs.pytest.org).
 
-It also needs a stamp catalogue in CSV-format. There is a `french-stamps.csv` in this directory, with all French stamps from 1849-1999. I have created that file from various sources on the net. If you want to include stamp images you will need to create a directory `images` and then add stamp images where each image file has the name `<id>.jpg`, where <id> is the id used in the first column of the CSV file. In the `french-stamps.csv` file the first column contains the Yvert-Tellier number of the stamp. You can use another id if you want to, as long as the id used in the CSV file is consistent with the id used in the stamp image file names.
+It also needs a stamp catalogue in CSV-format. There is a `french-stamps.csv` in the `data` directory, with all French stamps from 1849-1999. I have created that file from various sources on the net. If you want to include stamp images you will need to create a directory `images` and then add stamp images where each image file has the name `<id>.jpg`, where <id> is the id used in the first column of the CSV file. In the `french-stamps.csv` file the first column contains the Yvert-Tellier number of the stamp. You can use another id if you want to, as long as the id used in the CSV file is consistent with the id used in the stamp image file names.
+
+## Getting started
+
+Clone repo and set up development environment:
+```bash
+$ git clone git@github.com:pacoispaco/faststamps.git
+```
+
+Go to the `stamps-catalogue-api` directory and run:
+```bash
+$ cd stamps-catalogue-api
+stamps-catalogue-api$ virtualenv -p python3 env
+stamps-catalogue-api$ source env/bin/activate
+stamps-catalogue-api$ pip install -r requirements.txt
+```
 
 ## Development
 
+To run flake8 linting:
+```bash
+stamps-catalogue-api$ flake8 --config flake8.conf
+```
+
+To run tests, go to the respective source code directory for the application and run:
+```bash
+stamps-catalogue-api$ pytest -vs -k 'not api_stamps_poste_1_image'
+```
+
+You will not be able to run the test 'api\_stamps\_poste\_1\_image' unless you have a directory `data/images` with an image file for the first stamp in the french stamps catalogue.
+
 To run the stamps-catalogue-api:
 ```
-$ uvicorn main:app --reload
+stamps-catalogue-api$ uvicorn main:app --reload
 ```
 
 You can then access the API locally at: http://127.0.0.1:8000.
@@ -31,7 +58,9 @@ $ pytest -vs
 
 ## The stamp catalog CSV file
 
-The Catalogue API will read a stamp catalogue in CSV format. The API assumes the following structure of CSV file:
+The Catalogue API will read a stamp catalogue in CSV format. Currently it will read the `data/french-stamps.csv` file.
+
+The API assumes the following structure of CSV file:
 
 * The first row contains column headers and the subsequent rows contain data on individal stamps.
 * Each row must represent data on a single stamp.
