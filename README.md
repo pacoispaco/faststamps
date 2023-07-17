@@ -39,7 +39,7 @@ Clone the repo:
 $ git clone git@github.com:pacoispaco/faststamps.git
 ```
 
-Each separate component has its own directory and also its own evelopment and test setup. Read the `README.md` file for each component:
+Each separate component has its own directory and also its own development and test setup. Read the `README.md` file for each component:
 
  * [stamp-catalogue-api/README.md](stamp-catalogue-api/README.md).
  * [stamp-collection-api/README.md](stamp-collection-api/README.md).
