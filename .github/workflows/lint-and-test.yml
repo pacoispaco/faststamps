@@ -26,7 +26,11 @@ jobs:
             pip install -r requirements.txt
 
       - name: Run flake8
-        run: flake8 --config flake8.conf
+        run: |
+            cd stamp-catalogue-api
+            flake8 --config flake8.conf
 
       - name: Run pytest tests for stamp-catalogue-api
-        run: pytest -vs -k 'not api_stamps_poste_1_image'
+        run: |
+            cd stamp-catalogue-api
+            pytest -vs -k 'not api_stamps_poste_1_image'
