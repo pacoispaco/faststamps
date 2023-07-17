@@ -34,33 +34,16 @@ The total requirements are as follows, but note that the Faststamps app, Catalog
 
 ## Getting started
 
-Clone repo and set up development environment:
+Clone the repo:
 ```bash
 $ git clone git@github.com:pacoispaco/faststamps.git
-$ virtualenv -p python3 env
-$ source env/bin/activate
-$ pip install -r requirements.txt
 ```
 
-To run flake8 linting:
-```bash
-$ flake8 --config flake8.conf
-```
-
-To run tests, go to the respective source code directory for the application and run:
-```bash
-$ pytest -vs
-```
-
-## Directories
-
-There are three separate directories for the three separate applications; Faststamps app, Catalogue API and Collection API. See the respective README.md file for each application:
+Each separate component has its own directory and also its own evelopment and test setup. Read the `README.md` file for each component:
 
  * [stamp-catalogue-api/README.md](stamp-catalogue-api/README.md).
  * [stamp-collection-api/README.md](stamp-collection-api/README.md).
  * [stamp-app/README.md](stamp-app/README-md).
-
-This top level directory contains a Docker compose file for locally starting up all containers as a service.
 
 ## A few words on the design
 
