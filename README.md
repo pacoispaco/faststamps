@@ -7,7 +7,7 @@ Faststamps is a [responsive web-application](https://en.wikipedia.org/wiki/Respo
 Since it is a responsive web-application, you can use it in your mobile phone to keep track of your stamp collection.
 
 It consists of three components:
-* A web application **stamp-ui** written in [HTMX](https://htmx.org/) and [Bulma](https://bulma.io/) served by [FastAPI](https://fastapi.tiangolo.com/).
+* A web application **stamp-app** written in [HTMX](https://htmx.org/) and [Bulma](https://bulma.io/) served by [FastAPI](https://fastapi.tiangolo.com/).
 * A backend consisting of two micro-services:
   * A read-only HTTP/JSON API **stamp-catalogue-api** implemented with [FastAPI](https://fastapi.tiangolo.com/) and containing a stamp catalogue, using a CSV file as a database read into a [Pandas](https://pandas.pydata.org/) dataFrame at startup.
   * A HTTP/JSON API **stamp-collection-api** implemented with [FastAPI](https://fastapi.tiangolo.com/) and containing my collection of stamps, using [TinyDB](https://tinydb.readthedocs.io) or [unQLite](https://unqlite.org/) as a database.
