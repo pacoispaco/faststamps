@@ -15,9 +15,9 @@ Below I list a number of todos for the three components.
 In the first implementation there will be only one user (me) and that account will be managed by the
 Collections API. Eventually we will need a separate Accounts API to manage multiple users.
 
-- [] Implement first MWV [In progress].
+- [ ] Implement first MWV [In progress].
 - [x] Implement first HTML layout of index.html and CSS styling with Bulma CSS.
-- [] Dockerify [In progress].
+- [ ] Dockerify [In progress].
 - [ ] Implement the search view with HTMX using the Catalogue API.
 - [ ] Implement login using the Collections API.
 - [ ] Implement updating a collection using the Collections API.
