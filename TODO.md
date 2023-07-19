@@ -25,7 +25,7 @@ Collections API. Eventually we will need a separate Accounts API to manage multi
 
 ## Stamp catalogue API
 
-Currently the API only supports a single catalogue. The catalogue CSV file to use is also hard coded as a constant in the source code. We can improve a lot here:
+Currently the API only supports a single catalogue. The catalogue CSV file to use is also hard coded as a constant in the source code.
 
 - [x] Implement first MWV.
 - [x] Specify the stamp catalog file to use via a config file / environment variable.
@@ -42,7 +42,7 @@ Currently the API only supports a single catalogue. The catalogue CSV file to us
 
 ## Stamp collection API
 
-The stamp collection API will initially not have support for multiple users. But eventually it should:
+The stamp collection API will initially not have support for multiple users. But eventually it should.
 
 - [ ] Implement first MWV.
 - [ ] Implement support for importing and exporting a collection from/to a CSV file.
