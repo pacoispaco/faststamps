@@ -19,12 +19,12 @@ It also needs a stamp catalogue in CSV-format. There is a `french-stamps.csv` in
 
 Clone repo and set up development environment:
 ```bash
-$ git clone git@github.com:pacoispaco/faststamps.git
+git clone git@github.com:pacoispaco/faststamps.git
 ```
 
 Go to the `stamps-catalogue-api` directory and run:
 ```bash
-$ cd stamps-catalogue-api
+cd stamps-catalogue-api
 stamps-catalogue-api$ virtualenv -p python3 env
 stamps-catalogue-api$ source env/bin/activate
 stamps-catalogue-api$ pip install -r requirements.txt
@@ -46,7 +46,7 @@ You will not be able to run the test 'api\_stamps\_poste\_1\_image' unless you h
 
 Unit tests are written with Pytest. To run the unit tests:
 ```
-$ pytest -vs
+pytest -vs
 ```
 
 To build the Docker image:
