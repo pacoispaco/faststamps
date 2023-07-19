@@ -44,17 +44,34 @@ stamps-catalogue-api$ pytest -vs -k 'not api_stamps_poste_1_image'
 
 You will not be able to run the test 'api\_stamps\_poste\_1\_image' unless you have a directory `data/images` with an image file for the first stamp in the french stamps catalogue.
 
-To run the stamps-catalogue-api:
-```
-stamps-catalogue-api$ uvicorn main:app --reload
-```
-
-You can then access the API locally at: http://127.0.0.1:8000.
-
 Unit tests are written with Pytest. To run the unit tests:
 ```
 $ pytest -vs
 ```
+
+To build the Docker image:
+
+```bash
+docker build -t catalogue-api .
+```
+
+To run the Docker image and access it at port 8081:
+
+```bash
+docker run -d -p 8081:80 catalogue-api
+```
+
+You can then access the API locally at: http://127.0.0.1:8081.
+
+If you want to run the catalogue-api directly as a uvicorn server:
+
+```bash
+uvicorn main:app --reload --port 8081
+```
+
+You can then access the API locally at: http://127.0.0.1:8081. But of course you can't run that if
+you have a catalogue-api Docker container already running on the same port.
+
 
 ## The stamp catalog CSV file
 

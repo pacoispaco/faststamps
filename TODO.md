@@ -15,9 +15,9 @@ Below I list a number of todos for the three components.
 In the first implementation there will be only one user (me) and that account will be managed by the
 Collections API. Eventually we will need a separate Accounts API to manage multiple users.
 
-- [.] Implement first MWV.
+- [] Implement first MWV [In progress].
 - [x] Implement first HTML layout of index.html and CSS styling with Bulma CSS.
-- [.] Dockerify.
+- [] Dockerify [In progress].
 - [ ] Implement the search view with HTMX using the Catalogue API.
 - [ ] Implement login using the Collections API.
 - [ ] Implement updating a collection using the Collections API.
@@ -31,7 +31,7 @@ Currently the API only supports a single catalogue. The catalogue CSV file to us
 - [x] Specify the stamp catalog file to use via a config file / environment variable.
 - [x] Add use of the Server-Timing HTTP header.
 - [x] Add API typing based on Pydantic BaseModel.
-- [.] Dockerify.
+- [x] Dockerify.
 - [ ] Use Pydantic validation on query parameters.
 - [ ] Add proper logging.
 - [ ] Move the database (reading of the catalogue CSV file) to a separate file/module.
