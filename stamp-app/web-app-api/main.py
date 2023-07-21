@@ -62,7 +62,7 @@ def api_root_resource(request: Request, response: Response) -> ApiInfo:
        specification of this API can be found. The version number identifies the implementation
        version and not the interface version."""
     tic = time.perf_counter_ns()
-    result = {"name": "Faststamps Catalogue API.",
+    result = {"name": "Faststamps web-app-api.",
               "version": settings.VERSION,
               "openapi_specification": str(request.url) + "docs",
               "health": str(request.url) + "health"}
