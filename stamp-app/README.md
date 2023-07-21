@@ -9,20 +9,6 @@ of two parts:
    FastAPI that serves responses to HTMX-generated HTTP requests from the web application frontend.
    This is served by Uvicorn and is also packaged as a Docker image.
 
-The Faststamps App needs to be able to talk to running instances of both the Faststamps Catalogue
-API and the Faststamps Collection API. It is the web-app-api that is responsible for that.
-
-Here is a simple visualization of the runtime setup (architecture) as a three-tiered application:
-
-```mermaid
-graph TD;
-    id1[web-app: Nginx]-->id2[web-app-api: Uvicorn];
-    id2[web-app-api: Uvicorn]-->id3[Catalogue API: Uvicorn];
-    id2[web-app-api: Uvicorn]-->id4[Collections API: Uvicorn];
-```
-
-Arrows denote dependencies and request/response initiators.
-
 ## Requirements
 
 For the web-app-api:
