@@ -17,7 +17,7 @@ Collections API. Eventually we will need a separate Accounts API to manage multi
 
 - [ ] Implement first MWV [In progress].
 - [x] Implement first HTML layout of index.html and CSS styling with Bulma CSS.
-- [ ] Dockerify [In progress].
+- [x] Dockerify.
 - [ ] Implement the search view with HTMX using the Catalogue API.
 - [ ] Implement login using the Collections API.
 - [ ] Implement updating a collection using the Collections API.
@@ -32,10 +32,12 @@ Currently the API only supports a single catalogue. The catalogue CSV file to us
 - [x] Add use of the Server-Timing HTTP header.
 - [x] Add API typing based on Pydantic BaseModel.
 - [x] Dockerify.
-- [ ] Use Pydantic validation on query parameters.
+- [ ] Use Pydantic validation on all query parameters.
 - [ ] Add proper logging.
 - [ ] Move the database (reading of the catalogue CSV file) to a separate file/module.
 - [ ] Document the catalogue CSV file format (as a intersystem data transfer format).
+
+In the future:
 - [ ] Make the API support multiple stamp catalogues. This means API rewrite and redesign.
 - [ ] Make it possible to specify and/or add (load) stamp catalogues via the API. Also to download them as CSV-files.
 - [ ] Support metadata on the stamp cataloges, i.e. name, source etc.
@@ -46,4 +48,6 @@ The stamp collection API will initially not have support for multiple users. But
 
 - [ ] Implement first MWV.
 - [ ] Implement support for importing and exporting a collection from/to a CSV file.
+
+In the future:
 - [ ] Have support for multiple user collections. We should avoid implementing user accounts in this microservice. That should be a separate microservice.

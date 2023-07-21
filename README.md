@@ -7,15 +7,14 @@ Faststamps is a [responsive web-application](https://en.wikipedia.org/wiki/Respo
 Since it is a responsive web-application, you can use it in your mobile phone to keep track of your stamp collection.
 
 It consists of three components:
-* A web application **stamp-app** written in [HTMX](https://htmx.org/) and [Bulma](https://bulma.io/) served by [FastAPI](https://fastapi.tiangolo.com/).
+* A web application **stamp-app** written in [HTMX](https://htmx.org/) and [Bulma](https://bulma.io/) served by [FastAPI](https://fastapi.tiangolo.com/) packaged as two Docker images; the **web-app** for the static application page (index.html) and its static assets, and the **web-app-api** for the API responding to HTMX-requests.
 * A backend consisting of two micro-services:
   * A read-only HTTP/JSON API **stamp-catalogue-api** implemented with [FastAPI](https://fastapi.tiangolo.com/) and containing a stamp catalogue, using a CSV file as a database read into a [Pandas](https://pandas.pydata.org/) dataFrame at startup.
   * A HTTP/JSON API **stamp-collection-api** implemented with [FastAPI](https://fastapi.tiangolo.com/) and containing my collection of stamps, using [TinyDB](https://tinydb.readthedocs.io) or [unQLite](https://unqlite.org/) as a database.
 
 The first iteration has a simple authentication mechanism in place in the form of a configuration file containing the single user and that user's salted password hash. Also the first iteration does not make use of FastAPI async support and does not use a multithread-safe database solution.
 
-It is intended to be run as three [Docker](https://www.docker.com) containers with [Docker compose](https://docs.docker.com/compose/). It could be deployed on your laptop, on a home server, or on a virtual server with a VPS provider with Docker and Docker compose. Of course, if you want to access it on your phone from anywhere, you need to deploy it on a server you can access from anywhere.
-
+It is intended to be run as four [Docker](https://www.docker.com) containers with [Docker compose](https://docs.docker.com/compose/). It can run on your laptop or be deployed on a home server, or on a virtual server with a VPS provider with Docker and Docker compose. Of course, if you want to access it on your phone from anywhere, you need to deploy it on a server you can access from anywhere.
 
 ## Requirements
 
@@ -36,8 +35,15 @@ The total requirements are as follows, but note that the Faststamps app, Catalog
 
 Clone the repo:
 ```bash
-$ git clone git@github.com:pacoispaco/faststamps.git
+git clone git@github.com:pacoispaco/faststamps.git
 ```
+
+To start up a local running instance:
+```bash
+docker-compose up --build -d
+```
+The above will build all Docker images and start them up as containers, and will make the web app
+available at http://127.0.0.1:8080
 
 Each separate component has its own directory and also its own development and test setup. Read the `README.md` file for each component:
 
