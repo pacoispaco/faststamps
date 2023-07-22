@@ -16,7 +16,7 @@ It consists of three components:
 
 The first iteration has a simple authentication mechanism in place in the form of a configuration file containing the single user and that user's salted password hash. Also the first iteration does not make use of FastAPI async support and does not use a multithread-safe database solution.
 
-The entire app is intended to be run as four [Docker](https://www.docker.com) containers with [Docker compose](https://docs.docker.com/compose/). It can run on your laptop or be deployed on a home server, or on a virtual server with a VPS provider with Docker and Docker compose. Of course, if you want to access it on your phone from anywhere, you need to deploy it on a server you can access from anywhere.
+The entire app is intended to be run as three [Docker](https://www.docker.com) containers with [Docker compose](https://docs.docker.com/compose/). It can run on your laptop or be deployed on a home server, or on a virtual server with a VPS provider with Docker and Docker compose. Of course, if you want to access it on your phone from anywhere, you need to deploy it on a server you can access from anywhere.
 
 ## Requirements
 
@@ -45,8 +45,7 @@ To start up a local running instance:
 ```bash
 docker-compose up --build -d
 ```
-The above will build all Docker images and start them up as containers, and will make the web app
-available at http://127.0.0.1:8080
+The above will build all Docker images and start them up as containers, and will make the web app available at http://127.0.0.1:8080
 
 Each separate component has its own directory and also its own development and test setup. Read the `README.md` file for each component:
 
