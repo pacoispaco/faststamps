@@ -33,4 +33,4 @@ jobs:
       - name: Run pytest tests for stamp-catalogue-api
         run: |
             cd stamp-catalogue-api
-            pytest -vs -k 'not api_stamps_poste_1_image'
+            pytest -vs -k 'not stamps_poste_1_image'
