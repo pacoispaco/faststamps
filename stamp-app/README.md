@@ -9,7 +9,8 @@ For development:
  * [Python 3.10](https://www.python.org/), but should probably work with Python 3.8+.
  * [FastAPI](https://fastapi.tiangolo.com/).
  * [uvicorn](https://www.uvicorn.org).
- * [Jinja2](https://jinja.palletsprojects.com/en/3.1.x/)
+ * [Jinja2](https://jinja.palletsprojects.com/en/3.1.x/).
+ * [httpx](https://www.python-httpx.org/).
  * [Pytest](https://docs.pytest.org).
  * [HTMX](https://htmx.org/).
  * [Bulma CSS](://bulma.io/).
@@ -65,7 +66,7 @@ You can then access the app locally at: http://127.0.0.1:8080.
 If you want to run the app directly as a uvicorn server:
 
 ```bash
-uvicorn main:app --reload --port 8000
+uvicorn main:app --reload --port 8080
 ```
 
 You can then access the app locally at: http://127.0.0.1:8080. But of course you can't run that if

@@ -28,6 +28,7 @@ The total requirements are as follows, but note that the Faststamps app, Catalog
  * [HTMX](https://htmx.org/).
  * [Bulma](https://bulma.io/).
  * [Jinja2](https://jinja.palletsprojects.com/en/3.1.x/).
+ * [httpx](https://www.python-httpx.org/).
  * [Pandas](https://pandas.pydata.org/).
  * [TinyDB](https://tinydb.readthedocs.io)?
  * [unQLite](https://unqlite.org/)?
