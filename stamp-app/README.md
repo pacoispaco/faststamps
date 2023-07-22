@@ -51,7 +51,7 @@ pytest -vs
 To build the Docker image that serves the API with Uvicorn:
 
 ```bash
-docker build -t stamp-api .
+docker build -t stamp-app .
 ```
 
 To run the Docker image and access it at port 8081:
