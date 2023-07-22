@@ -9,8 +9,8 @@ Since it is a responsive web-application, you can use it in your mobile phone to
 
 It consists of three components:
 
-  * A web application **stamp-app** written in [HTMX](https://htmx.org/) and [Bulma](https://bulma.io/) served by [FastAPI](https://fastapi.tiangolo.com/) packaged as two Docker images; the **web-app** for the static application page (index.html) and its static assets, and the **web-app-api** for the API responding to HTMX-requests.
-  * A backend consisting of two micro-services:
+  * A web application **stamp-app** written in [HTMX](https://htmx.org/) and [Bulma](https://bulma.io/) served by [FastAPI](https://fastapi.tiangolo.com/) packaged as a Docker images.
+  * A backend consisting of two micro-services packaged as Docker images:
     * A read-only HTTP/JSON API **stamp-catalogue-api** implemented with [FastAPI](https://fastapi.tiangolo.com/) and containing a stamp catalogue, using a CSV file as a database read into a [Pandas](https://pandas.pydata.org/) dataFrame at startup.
     * A HTTP/JSON API **stamp-collection-api** implemented with [FastAPI](https://fastapi.tiangolo.com/) and containing my collection of stamps, using [TinyDB](https://tinydb.readthedocs.io) or [unQLite](https://unqlite.org/) as a database.
 
@@ -27,9 +27,10 @@ The total requirements are as follows, but note that the Faststamps app, Catalog
  * [uvicorn](https://www.uvicorn.org).
  * [HTMX](https://htmx.org/).
  * [Bulma](https://bulma.io/).
+ * [Jinja2](https://jinja.palletsprojects.com/en/3.1.x/).
  * [Pandas](https://pandas.pydata.org/).
- * [TinyDB](https://tinydb.readthedocs.io).
- * [unQLite](https://unqlite.org/).
+ * [TinyDB](https://tinydb.readthedocs.io)?
+ * [unQLite](https://unqlite.org/)?
  * [Docker](https://www.docker.com) and [Docker compose](https://docs.docker.com/compose/).
  * [Pytest](https://docs.pytest.org).
 
@@ -57,13 +58,12 @@ Each separate component has its own directory and also its own development and t
 
 Bare in mind this a personal sand-box project for trying out new technology and ideas.
 
-Here is a simple visualization of the runtime setup (architecture) with four Docker containers, where the **web-app** and **web-app-api** together realize the HTMX-based **stamp-app**:
+Here is a simple visualization of the runtime setup (architecture) with three Docker containers:
 
 ```mermaid
 graph TD;
-    id1(web-app: Nginx)-->|HTMX requests/responses| id2(web-app-api: Uvicorn);
-    id2(web-app-api: Uvicorn)-->|HTTP/JSON requests/responses| id3(Catalogue API: Uvicorn);
-    id2(web-app-api: Uvicorn)-->|HTTP/JSON requests/responses| id4(Collections API: Uvicorn);
+    id1(stamp-app: Uvicorn)-->id2(Catalogue API: Uvicorn);
+    id1(stamp-app: Uvicorn)-->id3(Collections API: Uvicorn);
 ```
 
 Arrows denote dependencies and request/response initiators.
