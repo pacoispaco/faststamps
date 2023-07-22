@@ -68,7 +68,7 @@ async def get_file(file: str, response: Response) -> FileResponse:
     path = os.path.join(file)
     print("/{file}")
     if os.path.exists(path):
-        result = FileResponse(path, media_type="")
+        result = FileResponse(path)
         toc = time.perf_counter_ns()
         # Set Server-timing header (server excution time in ms, not including FastAPI itself)
         result.headers["Server-timing"] = f"API;dur={(toc - tic)/1000000}"
