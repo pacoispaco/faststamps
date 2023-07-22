@@ -56,7 +56,7 @@ async def get_index_file(request: Request) -> HTMLResponse:
     result.headers["Last-modified"] = m_time_str
     result.headers["Etag"] = md5_digest(path)
     toc = time.perf_counter_ns()
-    # Set Server-timing header (server excution time in milliseconds, not including FastAPI itself)
+    # Set Server-timing header (server excution time in ms, not including FastAPI itself)
     result.headers["Server-timing"] = f"API;dur={(toc - tic)/1000000}"
     return result
 
@@ -70,12 +70,12 @@ async def get_file(file: str, response: Response) -> FileResponse:
     if os.path.exists(path):
         result = FileResponse(path, media_type="")
         toc = time.perf_counter_ns()
-        # Set Server-timing header (server excution time in milliseconds, not including FastAPI itself)
+        # Set Server-timing header (server excution time in ms, not including FastAPI itself)
         result.headers["Server-timing"] = f"API;dur={(toc - tic)/1000000}"
         return result
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
         toc = time.perf_counter_ns()
-        # Set Server-timing header (server excution time in milliseconds, not including FastAPI itself)
+        # Set Server-timing header (server excution time in ms, not including FastAPI itself)
         response.headers["Server-Timing"] = f"API;dur={(toc - tic)/1000000}"
         return None

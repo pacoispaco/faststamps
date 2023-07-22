@@ -2,7 +2,6 @@
 import pytest
 from fastapi.testclient import TestClient
 from main import app
-import os
 
 
 # Constants
@@ -11,6 +10,7 @@ API_BASE_URL = "http://127.0.0.1:%s" % (API_PORT)
 FAVICON_FILE = "favicon.png"
 FASTSTAMPS_LOGO_FILE = "faststamps-logo.png"
 FASTSTAMPS_JS_FILE = "faststamps.js"
+
 
 @pytest.fixture
 def client():
