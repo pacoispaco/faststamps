@@ -1,26 +1,17 @@
 services:
-  web-app:
-    build: ./stamp-app/web-app
-    container_name: web-app
+  stamp-app:
+    build: ./stamp-app
+    container_name: stamp-app
     ports:
       - 8080:80
     volumes:
-      - ./stamp-app/web-app:/usr/share/nginx/html
-
-  web-app-api:
-    build: ./stamp-app/web-app-api
-    command: uvicorn main:app --host 0.0.0.0 --port 80 --reload
-    container_name: web-app-api
-    ports:
-      - 8081:80
-    volumes:
-      - ./stamp-app/web-app-api:/app
+      - ./stamp-app:/app
 
   catalogue-api:
     build: ./stamp-catalogue-api
     command: uvicorn main:app --host 0.0.0.0 --port 80 --reload
     container_name: catalogui-api
     ports:
-      - 8082:80
+      - 8081:80
     volumes:
       - ./stamp-catalogue-api:/app

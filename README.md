@@ -1,5 +1,5 @@
 ![Tests: stamp-catalogue-api](https://github.com/pacoispaco/faststamps/actions/workflows/test-stamp-catalogue-api.yaml/badge.svg)
-![Tests: stamp-app-api](https://github.com/pacoispaco/faststamps/actions/workflows/test-stamp-app-api.yaml/badge.svg)
+![Tests: stamp-app](https://github.com/pacoispaco/faststamps/actions/workflows/test-stamp-app.yaml/badge.svg)
 
 # Faststamps
 

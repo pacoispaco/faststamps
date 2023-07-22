@@ -1,4 +1,4 @@
-name: test-stamp-app-api
+name: test-stamp-app
 
 on:
   push:
@@ -22,15 +22,15 @@ jobs:
 
       - name: Install Python requirements
         run: |
-            cd stamp-app/web-app-api
+            cd stamp-app
             pip install -r requirements.txt
 
       - name: Run flake8
         run: |
-            cd stamp-app/web-app-api
+            cd stamp-app
             flake8 --config flake8.conf
 
       - name: Run pytest tests for stamp-app web-app-api
         run: |
-            cd stamp-app/web-app-api
+            cd stamp-app
             pytest -vs

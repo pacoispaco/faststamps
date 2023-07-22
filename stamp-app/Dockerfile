@@ -9,6 +9,10 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Copy the application to the working directory
 COPY main.py /app
+COPY templates /app/templates
+COPY favicon.png /app
+COPY faststamps-logo.png /app
+COPY faststamps.js /app
 
 # Start the server
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
