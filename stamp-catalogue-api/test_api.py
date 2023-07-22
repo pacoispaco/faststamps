@@ -23,7 +23,7 @@ def client():
         yield c
 
 
-def test_api_root(client):
+def test_root(client):
     resource = "/"
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
@@ -35,7 +35,7 @@ def test_api_root(client):
                         'health': f'{API_BASE_URL}/health'}
 
 
-def test_api_stamps(client):
+def test_stamps(client):
     resource = "/stamps"
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
@@ -46,7 +46,7 @@ def test_api_stamps(client):
     assert r.json() == data
 
 
-def test_api_stamps_bad_start_and_count(client):
+def test_stamps_bad_start_and_count(client):
     resource = "/stamps?start=-1"
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
@@ -59,7 +59,7 @@ def test_api_stamps_bad_start_and_count(client):
     assert "Server-timing" in r.headers
 
 
-def test_api_stamps_filter_title(client):
+def test_stamps_filter_title(client):
     resource = ("/stamps"
                 "?title=Ceres")
     url = '%s%s' % (API_BASE_URL, resource)
@@ -69,7 +69,7 @@ def test_api_stamps_filter_title(client):
     assert r.json()["count"] == 116
 
 
-def test_api_stamps_filter_year(client):
+def test_stamps_filter_year(client):
     resource = ("/stamps"
                 "?issued=1931,1932,1933")
     url = '%s%s' % (API_BASE_URL, resource)
@@ -79,7 +79,7 @@ def test_api_stamps_filter_year(client):
     assert r.json()["count"] == 54
 
 
-def test_api_stamps_filter_color(client):
+def test_stamps_filter_color(client):
     resource = ("/stamps"
                 "?color=Green,Olive")
     url = '%s%s' % (API_BASE_URL, resource)
@@ -89,7 +89,7 @@ def test_api_stamps_filter_color(client):
     assert r.json()["count"] == 90
 
 
-def test_api_stamps_filter_value(client):
+def test_stamps_filter_value(client):
     resource = ("/stamps"
                 "?value=1 French centime")
     url = '%s%s' % (API_BASE_URL, resource)
@@ -99,7 +99,7 @@ def test_api_stamps_filter_value(client):
     assert r.json()["count"] == 32
 
 
-def test_api_stamps_filter_stamp_type(client):
+def test_stamps_filter_stamp_type(client):
     resource = ("/stamps"
                 "?stamp-type=Pour la poste Aérienne")
     url = '%s%s' % (API_BASE_URL, resource)
@@ -109,7 +109,7 @@ def test_api_stamps_filter_stamp_type(client):
     assert r.json()["count"] == 127
 
 
-def test_api_stamps_combined_filter(client):
+def test_stamps_combined_filter(client):
     resource = ("/stamps"
                 "?title=Ceres"
                 "&year=1850,1870,1872"
@@ -123,7 +123,34 @@ def test_api_stamps_combined_filter(client):
     assert r.json()["count"] == 3
 
 
-def test_api_stamps_poste_1(client):
+def test_stamps_count_20(client):
+    resource = ("/stamps"
+                "?count=20")
+    url = '%s%s' % (API_BASE_URL, resource)
+    r = client.get(url)
+    assert r.status_code == 200
+    assert "Server-timing" in r.headers
+    assert r.json()["count"] == 20
+    with open("test-data/stamp_count_20.json") as f:
+        data = json.load(f)
+    assert r.json() == data
+
+
+def test_stamps_count_20_start_20(client):
+    resource = ("/stamps"
+                "?start=20"
+                "&count=20")
+    url = '%s%s' % (API_BASE_URL, resource)
+    r = client.get(url)
+    assert r.status_code == 200
+    assert "Server-timing" in r.headers
+    assert r.json()["count"] == 20
+    with open("test-data/stamp_start_20_count_20.json") as f:
+        data = json.load(f)
+    assert r.json() == data
+
+
+def test_stamp_poste_1(client):
     resource = "/stamps/Poste-1"
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
@@ -235,7 +262,7 @@ def test_api_stamps_poste_1(client):
                         'years': '1849-1850'}
 
 
-def test_api_stamps_poste_1_image(client):
+def test_stamp_poste_1_image(client):
     resource = "/stamps/Poste-1/image"
     # Get image
     f = open(os.path.join(STAMPS_IMAGE_DIR, "T01-000-1.jpg"), "rb")
@@ -248,7 +275,7 @@ def test_api_stamps_poste_1_image(client):
     assert r.content == image
 
 
-def test_api_stamps_1a(client):
+def test_stamp_1a(client):
     resource = "/stamps/Poste-1-a"
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
@@ -360,7 +387,7 @@ def test_api_stamps_1a(client):
                         'years': '1849-1850'}
 
 
-def test_api_stamps_not_found(client):
+def test_stamp_not_found(client):
     resource = "/stamps/0"
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
@@ -369,7 +396,7 @@ def test_api_stamps_not_found(client):
     assert r.json() is None
 
 
-def test_api_stamp_titles(client):
+def test_stamp_titles(client):
     resource = "/stamp_titles"
     url = '%s%s' % (API_BASE_URL, resource)
     # First we test that english titles are returned if no explicit Accept-Languages is requested
@@ -398,7 +425,7 @@ def test_api_stamp_titles(client):
     assert r.json() == data
 
 
-def test_api_stamp_titles_wildcard_search(client):
+def test_stamp_titles_wildcard_search(client):
     resource = ("/stamp_titles"
                 "?q=*")
     url = '%s%s' % (API_BASE_URL, resource)
@@ -414,7 +441,7 @@ def test_api_stamp_titles_wildcard_search(client):
     assert r.json()["count"] == wildcard_count
 
 
-def test_api_stamp_titles_prefix_search(client):
+def test_stamp_titles_prefix_search(client):
     resource = ("/stamp_titles"
                 "?q=Ce*")
     url = '%s%s' % (API_BASE_URL, resource)
@@ -425,7 +452,7 @@ def test_api_stamp_titles_prefix_search(client):
     assert [title.startswith("Ce") for title in r.json()["values"]]
 
 
-def test_api_stamp_titles_suffix_search(client):
+def test_stamp_titles_suffix_search(client):
     resource = ("/stamp_titles"
                 "?q=*nt")
     url = '%s%s' % (API_BASE_URL, resource)
@@ -436,7 +463,7 @@ def test_api_stamp_titles_suffix_search(client):
     assert [title.endswith("nt") for title in r.json()["values"]]
 
 
-def test_api_stamp_titles_combined_prefix_and_suffix_search(client):
+def test_stamp_titles_combined_prefix_and_suffix_search(client):
     resource = ("/stamp_titles"
                 "?q=C*s")
     url = '%s%s' % (API_BASE_URL, resource)
@@ -447,7 +474,7 @@ def test_api_stamp_titles_combined_prefix_and_suffix_search(client):
     assert [title.startswith("C") and title.endswith("s") for title in r.json()["values"]]
 
 
-def test_api_stamp_titles_wildcard_search_multiple_stars(client):
+def test_stamp_titles_wildcard_search_multiple_stars(client):
     resource = ("/stamp_titles"
                 "?q=**")
     url = '%s%s' % (API_BASE_URL, resource)
@@ -457,7 +484,7 @@ def test_api_stamp_titles_wildcard_search_multiple_stars(client):
     assert r.json() == "Multiple wildcard stars '*' in query is not supported."
 
 
-def test_api_stamp_years(client):
+def test_stamp_years(client):
     resource = "/stamp_years"
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
@@ -468,7 +495,7 @@ def test_api_stamp_years(client):
     assert r.json() == data
 
 
-def test_api_stamp_colors(client):
+def test_stamp_colors(client):
     resource = "/stamp_colors"
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
@@ -479,7 +506,7 @@ def test_api_stamp_colors(client):
     assert r.json() == data
 
 
-def test_api_stamp_values(client):
+def test_stamp_values(client):
     resource = "/stamp_values"
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)

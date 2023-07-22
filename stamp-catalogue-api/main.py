@@ -270,6 +270,12 @@ centime".
     if stamp_type is not None:
         types = stamp_type.split(',')
         stamps = stamps[stamps["type_fr"].isin(types)]
+    if start is not None:
+        i = start - 1
+    else:
+        i = 0
+    if count is not None:
+        stamps = stamps[i:i+count]
 
     # Convert all items in stamps to dicts that can be validated as Stamp model objects.
     apistamps = stamps.to_dict(orient='records')
