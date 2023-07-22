@@ -19,12 +19,3 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 });
-
-
-const bulmaCollapsibleElement = new bulmaCollapsible('#to-collapse');
-
-// Access to the bulmaCollapsible instance from DOM
-const collapsibleElement = document.getElementById('#to-collapse');
-if (collapsibleElement) {
-  const collapsibleInstance = collapsibleElement.bulmaCollapsible();
-}
