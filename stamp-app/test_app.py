@@ -27,7 +27,7 @@ def test_app_index(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
-    assert "Server-timing" in r.headers
+    assert "server-timing" in r.headers
 
 
 def test_app_assets(client):
@@ -35,7 +35,7 @@ def test_app_assets(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
-    assert "Server-timing" in r.headers
+    assert "server-timing" in r.headers
     with open(FAVICON_FILE, 'rb') as f:
         data = f.read()
     assert r.read() == data
@@ -44,7 +44,7 @@ def test_app_assets(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
-    assert "Server-timing" in r.headers
+    assert "server-timing" in r.headers
     with open(FASTSTAMPS_LOGO_FILE, 'rb') as f:
         data = f.read()
 
@@ -52,6 +52,6 @@ def test_app_assets(client):
     url = '%s%s' % (API_BASE_URL, resource)
     r = client.get(url)
     assert r.status_code == 200
-    assert "Server-timing" in r.headers
+    assert "server-timing" in r.headers
     with open(FASTSTAMPS_JS_FILE, 'rb') as f:
         data = f.read()
