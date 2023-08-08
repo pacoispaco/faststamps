@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request, Response, Query, Path, status  # Header
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
-from typing import Optional, Annotated  #, List
+from typing import Optional, Annotated  # List
 # from pydantic import BaseModel, HttpUrl
 from pydantic_settings import BaseSettings
 import os.path
@@ -74,7 +74,7 @@ async def get_search(request: Request,
                      q: Optional[str] = Query(None,
                                               description="Search query"),
                      start: Optional[int] = Query(None,
-                                            description="Start result")) -> HTMLResponse:
+                                                  description="Start result")) -> HTMLResponse:
     """The search page (search.hmtl)."""
     tic = time.perf_counter_ns()
     if q:
@@ -114,7 +114,7 @@ async def get_search_results(request: Request, response: Response,
                              q: Optional[str] = Query(None,
                                                       description="Search query"),
                              start: Optional[int] = Query(None,
-                                                          description="Start result")) -> HTMLResponse:
+                                                          description="Start")) -> HTMLResponse:
     """HTML representation of the search results (search_results.html)."""
     tic = time.perf_counter_ns()
     # Get search results from Catalogue API
