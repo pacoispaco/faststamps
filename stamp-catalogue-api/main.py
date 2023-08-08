@@ -394,7 +394,7 @@ def get_stamp_image(response: Response, stamp_id: str = Path(description="""`sta
             # Return total server xecution time in milliseconds (not including FastAPI itself)
             msecs = f"API;dur={(toc-tic)/1000000}"
             return FileResponse(image_path,
-                                media_type="image",
+                                media_type="image/jpeg",
                                 headers={"Server-timing": msecs})
 
         except KeyError:
