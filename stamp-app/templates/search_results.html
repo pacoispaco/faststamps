@@ -1,0 +1,99 @@
+{% if rps %}
+
+<div id="search-summary" class="has-text-grey-light">
+  {{ ssr.count }} results ({{ ssr.search_time }} seconds) comprising {{ ssr.stamps_count }} stamps and {{ ssr.variant_stamps_count }} variants.
+</div>
+
+<br>
+
+<ul id="search-list">
+{% for item in ssr.stamps %}
+  <li>
+
+        {% if not item.id.yt_variant %}
+        <div class="card">
+          <div class="card-content mb-2 pb-1">
+            <div class="media mb-1">
+              <div class="media-left">
+                <figure class="image is-96x96">
+                  <img src="/stamp_image/{{ item.id.type }}-{{item.id.yt_no }}" alt="Placeholder image">
+                </figure>
+              </div>
+              <div class="media-content">
+                <p class="title is-6 mb-1">{{ item.title_fr }}</p>
+                <p class="is-size-6">{{ item.issued }} ({{ item.years }})</p>
+                <p class="is-size-6">YT: {{ item.id.type }} {{item.id.yt_no }}</p>
+                <p class="is-size-6">{{ item.value_fr }} {{ item.color_fr }} {{ item.description_fr }}</p>
+              </div>
+              <span class="mr-5">
+                <div class="content">
+                    <br>
+                    <label class="checkbox">
+                      <input type="checkbox">
+                        MNH
+                    </label>
+                    <br>
+                    <label class="checkbox">
+                      <input type="checkbox">
+                        MH
+                    </label>
+                    <br>
+                    <label class="checkbox">
+                      <input type="checkbox">
+                        U
+                    </label>
+                  </p>
+                </div>
+              </span>
+            </div>
+
+            <details hx-get="/stamp_variants/{{ item.id.type }}-{{ item.id.yt_no }}"
+                     hx-target="#variant-details-{{ item.id.type }}-{{ item.id.yt_no }}">
+              <summary class="my-4">
+                Variants
+              </summary>
+              <div id="variant-details-{{ item.id.type }}-{{ item.id.yt_no }}">
+              </div>
+            </details>
+          </div>
+        </div>
+        {% endif %}
+
+  </li>
+{% endfor %}
+</ul>
+
+<br>
+
+<div id="search-navigation">
+<nav class="pagination is-centered" role="navigation" aria-label="pagination">
+  {% if rps.previous_page %}
+  <a class="pagination-previous">Previous page</a>
+  {% endif %}
+  {% if rps.previous_page %}
+  <a class="pagination-next">Next page</a>
+  {% endif %}
+  <ul class="pagination-list">
+    {% if rps.first_page %}
+    <li><a class="pagination-link" aria-label="Goto first page">1</a></li>
+    {% endif %}
+    {% if rps.left_ellipsis %}
+    <li><span class="pagination-ellipsis">&hellip;</span></li>
+    {% endif %}
+    {% for page in rps.linked_pages %}
+      {% if page == rps.current_page %}
+      <li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">{{ page }}</a></li>
+      {% else %}
+      <li><a class="pagination-link" aria-label="Goto page 47">{{ page }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if rps.right_ellipsis %}
+    <li><span class="pagination-ellipsis">&hellip;</span></li>
+    {% endif %}
+    {% if rps.last_page %}
+    <li><a class="pagination-link" aria-label="Goto last page">{{ rps.page_count }}</a></li>
+    {% endif %}
+  </ul>
+</nav>
+
+</div>{% endif %}
