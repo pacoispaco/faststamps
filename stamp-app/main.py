@@ -81,7 +81,8 @@ async def get_search(request: Request,
         url = f"{settings.CATALOGUE_API_URL}stamps?title={q}"
         r = httpx.get(url)
         if r.status_code == 200:
-            ssr = search.stamp_search_results(r,
+            ssr = search.stamp_search_results(q,
+                                              r,
                                               start,
                                               settings.RESULTS_PER_PAGE)
             rps = search.search_result_page_spec(ssr["stamps_count"],
@@ -120,7 +121,8 @@ async def get_search_results(request: Request, response: Response,
     r = httpx.get(url)
     # Set up the HTMX-response
     if r.status_code == 200:
-        ssr = search.stamp_search_results(r,
+        ssr = search.stamp_search_results(q,
+                                          r,
                                           start,
                                           settings.RESULTS_PER_PAGE)
         rps = search.search_result_page_spec(ssr["stamps_count"],

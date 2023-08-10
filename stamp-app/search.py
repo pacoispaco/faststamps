@@ -9,6 +9,7 @@ from pydantic import BaseModel
 class StampSearchResults(BaseModel):
     """The results of a stamp search with some calculated attributes with information useful for
        rendering the HTML that represents the search results."""
+    query: str
     count: int
     stamps_count: int
     variant_stamps_count: int
@@ -21,6 +22,7 @@ class SearchResultPageSpec(BaseModel):
        search results, a given number of "results per page", a current page of results to present
        based on a `start`search result, and finally a specification of other navigational links
        to other pages with search results."""
+    rpp: int
     page_count: int
     current_page: int
     linked_pages: List[int]
@@ -50,11 +52,12 @@ def search_result_page_spec(count: int,
     assert linked_pages >= 0
 
     # Calculate total number of pages
-    page_count = count // rpp + 1
+    page_count = (count - 1) // rpp + 1
     # Calculate the current page number
     current_page = start // rpp + 1
 
-    result = {"page_count": page_count,
+    result = {"rpp": rpp,
+              "page_count": page_count,
               "current_page": current_page,
               "linked_pages": [],
               "next_page": next_page,
@@ -113,7 +116,7 @@ def search_result_page_spec(count: int,
     return result
 
 
-def stamp_search_results(response, start, results_per_page) -> StampSearchResults:
+def stamp_search_results(query, response, start, results_per_page) -> StampSearchResults:
     """A StampSearchResults object based on the response from a call to the stamp-catalogue
        API, suitable for passing to the HTML rendering function."""
     search_time = float(response.headers["server-timing"].split("=")[1])/1000
@@ -122,7 +125,8 @@ def stamp_search_results(response, start, results_per_page) -> StampSearchResult
     # proper stamps.
     stamps = [stamp for stamp in results["stamps"] if stamp["id"]["yt_variant"] == '']
     stamps_count = len(stamps)
-    result = {"count": results["count"],
+    result = {"query": query,
+              "count": results["count"],
               "stamps_count": stamps_count,
               "variant_stamps_count": results["count"] - stamps_count,
               "stamps": stamps[start:start + results_per_page],
