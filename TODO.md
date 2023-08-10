@@ -15,11 +15,21 @@ Below I list a number of todos for the three components.
 In the first implementation there will be only one user (me) and that account will be managed by the
 Collections API. Eventually we will need a separate Accounts API to manage multiple users.
 
-- [ ] Implement first MWV [In progress].
+Implement first MWV [In progress]:
 - [x] Implement first HTML layout of index.html and CSS styling with Bulma CSS.
 - [x] Dockerify.
-- [ ] Implement the search view with HTMX using the Catalogue API.
+- [.] Implement the search view with HTMX using the Catalogue API with support for searching on english title.
+
+Implement more proper search support
+- [ ] Implement support for searching on english title with wild card.
+- [ ] Implement support for filtering on stamp type (Poste & Pour la poste Aérienne), years (and year intervals) and color.
+- [ ] Implement support for sorting on yt number forward or backwards.
+- [ ] Implement support for searching on all words.
+
+Implement login:
 - [ ] Implement login using the Collections API.
+
+Implement support for collections:
 - [ ] Implement updating a collection using the Collections API.
 - [ ] Implement the catalogue view using the Catalogue API.
 
