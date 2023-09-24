@@ -1,6 +1,6 @@
 # TODO
 
-The generap roadmap is:
+The general roadmap is:
 
 1. Implement a MWV (Minimal Working Version) of the Catalogue API. This is to learn more about
    FastAPI and to get a working catalogue of stamps to work with.
