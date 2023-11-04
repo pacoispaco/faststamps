@@ -2,8 +2,7 @@ from fastapi import FastAPI, Request, Response, Query, Path, status  # Header
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from typing import Optional, Annotated  # List
-# from pydantic import BaseModel, HttpUrl
-from pydantic_settings import BaseSettings
+from pydantic import BaseSettings
 import os.path
 import httpx
 import datetime
@@ -52,8 +51,8 @@ app = FastAPI(
     version=settings.VERSION)
 
 
-@app.get("/")
-async def get_index_file(request: Request) -> HTMLResponse:
+@app.get("/", response_class=HTMLResponse)
+async def get_index_file(request: Request):
     """The main application page (index.html)."""
     tic = time.perf_counter_ns()
     result = templates.TemplateResponse("index.html", {"request": request})
@@ -69,12 +68,12 @@ async def get_index_file(request: Request) -> HTMLResponse:
     return result
 
 
-@app.get("/search")
-async def get_search(request: Request,
+@app.get("/search", response_class=HTMLResponse)
+async def get_search(request: Request, response: Response,
                      q: Optional[str] = Query(None,
                                               description="Search query"),
-                     start: Optional[int] = Query(default=0,
-                                                  description="Start result")) -> HTMLResponse:
+                     start: int = Query(default=0,
+                                        description="Start result")):
     """The search page (search.hmtl)."""
     tic = time.perf_counter_ns()
     if q:
@@ -85,7 +84,7 @@ async def get_search(request: Request,
                                               r,
                                               start,
                                               settings.RESULTS_PER_PAGE)
-            rps = search.search_result_page_spec(ssr["stamps_count"],
+            rps = search.search_result_page_spec(ssr.stamps_count,
                                                  start,
                                                  settings.RESULTS_PER_PAGE,
                                                  linked_pages=10,
@@ -96,6 +95,8 @@ async def get_search(request: Request,
                                                  "ssr": ssr,
                                                  "rps": rps})
             result.headers["HX-Push"] = f"/search?q={q}"
+        else:
+            result = response
     else:
         rps = None
         result = templates.TemplateResponse("search.html", {"request": request})
@@ -105,12 +106,12 @@ async def get_search(request: Request,
     return result
 
 
-@app.get("/search_results")
+@app.get("/search_results", response_model=HTMLResponse)
 async def get_search_results(request: Request, response: Response,
                              q: Optional[str] = Query(None,
                                                       description="Search query"),
-                             start: Optional[int] = Query(default=0,
-                                                          description="Start")) -> HTMLResponse:
+                             start: int = Query(default=0,
+                                                description="Start")):
     """HTML representation of the search results (search_results.html)."""
     tic = time.perf_counter_ns()
     # Get search results from Catalogue API
@@ -125,7 +126,7 @@ async def get_search_results(request: Request, response: Response,
                                           r,
                                           start,
                                           settings.RESULTS_PER_PAGE)
-        rps = search.search_result_page_spec(ssr["stamps_count"],
+        rps = search.search_result_page_spec(ssr.stamps_count,
                                              start,
                                              settings.RESULTS_PER_PAGE,
                                              linked_pages=10,
@@ -148,9 +149,9 @@ async def get_search_results(request: Request, response: Response,
         return response
 
 
-@app.get("/stamp_variants/{stamp_id}")
+@app.get("/stamp_variants/{stamp_id}", response_model=HTMLResponse)
 async def get_stamp_variants(request: Request, response: Response,
-                             stamp_id: Annotated[str, Path(title="Id of stamp")]) -> HTMLResponse:
+                             stamp_id: Annotated[str, Path(title="Id of stamp")]):
     """HTML representation of a stamps variants."""
     tic = time.perf_counter_ns()
     url = f"{settings.CATALOGUE_API_URL}stamps/{stamp_id}"
@@ -172,9 +173,9 @@ async def get_stamp_variants(request: Request, response: Response,
         response.headers["Server-timing"] = f"API;dur={(toc - tic)/1000000}"
 
 
-@app.get("/stamp_image/{stamp_id}")
+@app.get("/stamp_image/{stamp_id}", response_model=Response)
 async def get_stamp_image(response: Response,
-                          stamp_id: Annotated[str, Path(title="Id of stamp")]) -> Response:
+                          stamp_id: Annotated[str, Path(title="Id of stamp")]):
     tic = time.perf_counter_ns()
     url = f"{settings.CATALOGUE_API_URL}stamps/{stamp_id}/image"
     r = httpx.get(url)
@@ -189,10 +190,11 @@ async def get_stamp_image(response: Response,
         toc = time.perf_counter_ns()
         # Set Server-timing header (server excution time in ms, not including FastAPI itself)
         response.headers["Server-timing"] = f"API;dur={(toc - tic)/1000000}"
+        return response
 
 
-@app.get("/{file}")
-async def get_file(file: str, response: Response) -> FileResponse:
+@app.get("/{file}", response_model=FileResponse)
+async def get_file(file: str, response: Response):
     """Return the file (binary contents) with the given name."""
     tic = time.perf_counter_ns()
     path = os.path.join(file)
@@ -207,4 +209,4 @@ async def get_file(file: str, response: Response) -> FileResponse:
         toc = time.perf_counter_ns()
         # Set Server-timing header (server excution time in ms, not including FastAPI itself)
         response.headers["Server-timing"] = f"API;dur={(toc - tic)/1000000}"
-        return None
+        return response 
