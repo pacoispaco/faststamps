@@ -2,7 +2,8 @@ from fastapi import FastAPI, Request, Response, Query, Path, status  # Header
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from typing import Optional, Annotated  # List
-from pydantic import BaseSettings
+# from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 import os.path
 import httpx
 import datetime
