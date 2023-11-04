@@ -209,4 +209,4 @@ async def get_file(file: str, response: Response):
         toc = time.perf_counter_ns()
         # Set Server-timing header (server excution time in ms, not including FastAPI itself)
         response.headers["Server-timing"] = f"API;dur={(toc - tic)/1000000}"
-        return response 
+        return response
