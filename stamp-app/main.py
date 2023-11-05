@@ -107,7 +107,7 @@ async def get_search(request: Request, response: Response,
     return result
 
 
-@app.get("/search_results", response_model=HTMLResponse)
+@app.get("/search_results", response_class=HTMLResponse)
 async def get_search_results(request: Request, response: Response,
                              q: Optional[str] = Query(None,
                                                       description="Search query"),
@@ -150,7 +150,7 @@ async def get_search_results(request: Request, response: Response,
         return response
 
 
-@app.get("/stamp_variants/{stamp_id}", response_model=HTMLResponse)
+@app.get("/stamp_variants/{stamp_id}", response_class=HTMLResponse)
 async def get_stamp_variants(request: Request, response: Response,
                              stamp_id: Annotated[str, Path(title="Id of stamp")]):
     """HTML representation of a stamps variants."""
@@ -174,7 +174,7 @@ async def get_stamp_variants(request: Request, response: Response,
         response.headers["Server-timing"] = f"API;dur={(toc - tic)/1000000}"
 
 
-@app.get("/stamp_image/{stamp_id}", response_model=Response)
+@app.get("/stamp_image/{stamp_id}", response_class=Response)
 async def get_stamp_image(response: Response,
                           stamp_id: Annotated[str, Path(title="Id of stamp")]):
     tic = time.perf_counter_ns()
@@ -194,7 +194,7 @@ async def get_stamp_image(response: Response,
         return response
 
 
-@app.get("/{file}", response_model=FileResponse)
+@app.get("/{file}", response_class=FileResponse)
 async def get_file(file: str, response: Response):
     """Return the file (binary contents) with the given name."""
     tic = time.perf_counter_ns()
