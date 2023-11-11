@@ -2,13 +2,13 @@
 
 The general roadmap is:
 
-1. Implement a MWV (Minimal Working Version) of the Catalogue API. This is to learn more about
-   FastAPI and to get a working catalogue of stamps to work with.
+1. Implement a MWV (Minimal Working Version) of the Catalog API. This is to learn more about
+   FastAPI and to get a working catalog of stamps to work with.
 2. Implement a MWV of the Web app. This is to learn more about HTMX and then also using the
-   Catalogue API.
+   catalog API.
 3. Implement a MWV of the Collections API. This is to get a first MWV of the full application.
 
-Below I list a number of todos for the three components.
+Below I list a number of to-dos for the three components.
 
 ## Stamp web app
 
@@ -18,24 +18,24 @@ Collections API. Eventually we will need a separate Accounts API to manage multi
 Implement first MWV [In progress]:
 - [x] Implement first HTML layout of index.html and CSS styling with Bulma CSS.
 - [x] Dockerify.
-- [.] Implement the search view with HTMX using the Catalogue API with support for searching on english title.
+- [.] Implement the search view with HTMX using the catalog API with support for searching on English title.
 
-Implement more proper search support
-- [ ] Implement support for searching on english title with wild card.
-- [ ] Implement support for filtering on stamp type (Poste & Pour la poste Aérienne), years (and year intervals) and color.
-- [ ] Implement support for sorting on yt number forward or backwards.
-- [ ] Implement support for searching on all words.
+Implement more proper search support:
+- [ ] Search English title with wild card.
+- [ ] With filtering on stamp type (Poste & Pour la poste Aérienne), years (and year intervals) and color.
+- [ ] Sort on yt number forward or backwards.
+- [ ] Search on all words.
 
 Implement login:
 - [ ] Implement login using the Collections API.
 
 Implement support for collections:
 - [ ] Implement updating a collection using the Collections API.
-- [ ] Implement the catalogue view using the Catalogue API.
+- [ ] Implement the catalog view using the catalog API.
 
-## Stamp catalogue API
+## Stamp catalog API
 
-Currently the API only supports a single catalogue. The catalogue CSV file to use is also hard coded as a constant in the source code.
+Currently the API only supports a single catalog. The catalog CSV file to use is also hard coded as a constant in the source code.
 
 - [x] Implement first MWV.
 - [x] Specify the stamp catalog file to use via a config file / environment variable.
@@ -44,13 +44,13 @@ Currently the API only supports a single catalogue. The catalogue CSV file to us
 - [x] Dockerify.
 - [ ] Use Pydantic validation on all query parameters.
 - [ ] Add proper logging.
-- [ ] Move the database (reading of the catalogue CSV file) to a separate file/module.
-- [ ] Document the catalogue CSV file format (as a intersystem data transfer format).
+- [ ] Move the database (reading of the catalog CSV file) to a separate file/module.
+- [ ] Document the catalog CSV file format (as an inter-system data transfer format).
 
 In the future:
-- [ ] Make the API support multiple stamp catalogues. This means API rewrite and redesign.
-- [ ] Make it possible to specify and/or add (load) stamp catalogues via the API. Also to download them as CSV-files.
-- [ ] Support metadata on the stamp cataloges, i.e. name, source etc.
+- [ ] Make the API support multiple stamp catalogs. This means API rewrite and redesign.
+- [ ] Make it possible to specify and/or add (load) stamp catalogs via the API. Also to download them as CSV-files.
+- [ ] Support metadata on the stamp catalogs, i.e. name, source etc.
 
 ## Stamp collection API
 
