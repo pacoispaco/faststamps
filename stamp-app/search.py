@@ -67,7 +67,7 @@ def search_result_page_spec(count: int,
         page_count = (count - 1) // rpp + 1
         # Calculate the current page number
         current_page = start // rpp + 1
-    
+
         result = SearchResultPageSpec(rpp=rpp,
                                       page_count=page_count,
                                       current_page=current_page,
@@ -78,7 +78,7 @@ def search_result_page_spec(count: int,
                                       last_page=last_page,
                                       left_ellipsis=False,
                                       right_ellipsis=False)
-    
+
         if linked_pages >= page_count:
             # All pages will have links
             first = 1
@@ -90,9 +90,9 @@ def search_result_page_spec(count: int,
             first = current_page
             last = current_page
         elif linked_pages > 1:
-            # Calculate number of pages left and right of current page `n` that will have links. In the
-            # case of an even number of linked pages, we link one more page to the left than to the
-            # right.
+            # Calculate number of pages left and right of current page `n` that will have links. In
+            # the case of an even number of linked pages, we link one more page to the left than to
+            # the right.
             first = current_page - linked_pages // 2
             last = current_page + linked_pages // 2
             if linked_pages % 2 == 0:
@@ -104,11 +104,11 @@ def search_result_page_spec(count: int,
             if last > page_count:
                 first = first - (last - page_count)
                 last = page_count
-    
+
         # Build representation with links
         for i in range(first, last+1):
             result.linked_pages.append(i)
-    
+
         # Check if first page, last page and ellipsis should be shown
         if 1 in result.linked_pages:
             result.first_page = False
