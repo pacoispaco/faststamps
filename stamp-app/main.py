@@ -85,7 +85,7 @@ async def get_search(request: Request, response: Response,
                                               r,
                                               start,
                                               settings.RESULTS_PER_PAGE)
-            rps = search.search_result_page_spec(ssr["stamps_count"],
+            rps = search.search_result_page_spec(ssr.stamps_count,
                                                  start,
                                                  settings.RESULTS_PER_PAGE,
                                                  linked_pages=10,
