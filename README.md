@@ -30,7 +30,7 @@ The total requirements are as follows, but note that the Faststamps app, Catalog
  * [Jinja2](https://jinja.palletsprojects.com/en/3.1.x/).
  * [httpx](https://www.python-httpx.org/).
  * [Pandas](https://pandas.pydata.org/).
- * Some embeddded database like [TinyDB](https://tinydb.readthedocs.io), [unQLite](https://unqlite.org/) or [SQLiite](https://www.sqlite.org/index.html). Ihaven't decided yet.
+ * Some embeddded database like [TinyDB](https://tinydb.readthedocs.io), [unQLite](https://unqlite.org/) or [SQLite](https://www.sqlite.org/index.html). I haven't decided yet.
  * [Docker](https://www.docker.com) and [Docker compose](https://docs.docker.com/compose/).
  * [Pytest](https://docs.pytest.org).
 
