@@ -16,15 +16,20 @@ In the first implementation there will be only one user (me) and that account wi
 Collections API. Eventually we will need a separate Accounts API to manage multiple users.
 
 Implement first MWV [In progress]:
-- [x] Implement first HTML layout of index.html and CSS styling with Bulma CSS.
-- [x] Dockerify.
-- [.] Implement the search view with HTMX using the catalog API with support for searching on English title.
+- [X] Implement first HTML layout of index.html and CSS styling with Bulma CSS.
+- [X] Dockerify.
+- [X] Implement the search view with HTMX using the catalog API with support for searching on English title.
 
 Implement more proper search support:
+- [ ] Case insensitive.
 - [ ] Search English title with wild card.
-- [ ] With filtering on stamp type (Poste & Pour la poste Aérienne), years (and year intervals) and color.
-- [ ] Sort on yt number forward or backwards.
 - [ ] Search on all words.
+
+Implement search filters:
+- [ ] With filtering on stamp type (Poste & Pour la poste Aérienne), years (and year intervals) and color.
+
+Implement sorting results:
+- [ ] Sort on yt number forward or backwards.
 
 Implement login:
 - [ ] Implement login using the Collections API.
@@ -37,14 +42,15 @@ Implement support for collections:
 
 Currently the API only supports a single catalog. The catalog CSV file to use is also hard coded as a constant in the source code.
 
-- [x] Implement first MWV.
-- [x] Specify the stamp catalog file to use via a config file / environment variable.
-- [x] Add use of the Server-Timing HTTP header.
-- [x] Add API typing based on Pydantic BaseModel.
-- [x] Dockerify.
+- [X] Implement first MWV.
+- [X] Specify the stamp catalog file to use via a config file / environment variable.
+- [X] Add use of the Server-Timing HTTP header.
+- [X] Add API typing based on Pydantic BaseModel.
+- [X] Dockerify.
 - [ ] Use Pydantic validation on all query parameters.
 - [ ] Add proper logging.
 - [ ] Move the database (reading of the catalog CSV file) to a separate file/module.
+- [ ] Use an embedded database (unqlite, tidydb or sqllite).
 - [ ] Document the catalog CSV file format (as an inter-system data transfer format).
 
 In the future:
