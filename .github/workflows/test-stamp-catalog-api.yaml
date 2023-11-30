@@ -1,4 +1,4 @@
-name: test-stamp-catalogue-api
+name: test-stamp-catalog-api
 
 on:
   push:
@@ -22,15 +22,15 @@ jobs:
 
       - name: Install Python requirements
         run: |
-            cd stamp-catalogue-api
+            cd stamp-catalog-api
             pip install -r requirements.txt
 
       - name: Run flake8
         run: |
-            cd stamp-catalogue-api
+            cd stamp-catalog-api
             flake8 --config flake8.conf
 
-      - name: Run pytest tests for stamp-catalogue-api
+      - name: Run pytest tests for stamp-catalog-api
         run: |
-            cd stamp-catalogue-api
+            cd stamp-catalog-api
             pytest -vs -k 'not stamp_poste_1_image'
