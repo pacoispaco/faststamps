@@ -1,4 +1,4 @@
-# This file contains Pytest-based unit tests for the Faststamps Catalogue API
+# This file contains Pytest-based unit tests for the Faststamps Catalog API
 import pytest
 from fastapi.testclient import TestClient
 from main import app
@@ -29,7 +29,7 @@ def test_root(client):
     r = client.get(url)
     assert r.status_code == 200
     assert "Server-timing" in r.headers
-    assert r.json() == {'name': 'Faststamps Catalogue API.',
+    assert r.json() == {'name': 'Faststamps Catalog API.',
                         'version': '0.0.1',
                         'openapi_specification': f'{API_BASE_URL}/docs',
                         'health': f'{API_BASE_URL}/health'}

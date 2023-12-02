@@ -1,5 +1,5 @@
 # This is a utility module for with features for preproccessing search results from the Faststamps
-# catalogue-api before the search results are rendered in HTML.
+# catalog-api before the search results are rendered in HTML.
 
 from typing import List
 from pydantic import BaseModel
@@ -78,7 +78,8 @@ def search_result_page_spec(count: int,
                                       last_page=last_page,
                                       left_ellipsis=False,
                                       right_ellipsis=False)
-
+        first =0 
+        last = 0
         if linked_pages >= page_count:
             # All pages will have links
             first = 1
@@ -131,7 +132,7 @@ def search_result_page_spec(count: int,
 
 
 def stamp_search_results(query, response, start, results_per_page) -> StampSearchResults:
-    """A StampSearchResults object based on the response from a call to the stamp-catalogue
+    """A StampSearchResults object based on the response from a call to the stamp-catalog
        API, suitable for passing to the HTML rendering function."""
     search_time = float(response.headers["server-timing"].split("=")[1])/1000
     results = response.json()

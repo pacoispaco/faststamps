@@ -92,6 +92,8 @@ def result_pages_specification(count: int,
               "first_page": first_page,
               "last_page": last_page}
 
+    first = 0
+    last = 0
     if linked_pages >= page_count:
         # All pages will have links
         first = 1
@@ -190,6 +192,8 @@ def linked_pages_representation(current_page: int,
     assert page_count >= 0
     assert linked_pages >= 0
 
+    first = 0
+    last = 0
     result = []
     if linked_pages >= page_count:
         # All pages will have links

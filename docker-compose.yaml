@@ -7,11 +7,11 @@ services:
     volumes:
       - ./stamp-app:/app
 
-  catalogue-api:
-    build: ./stamp-catalogue-api
+  catalog-api:
+    build: ./stamp-catalog-api
     command: uvicorn main:app --host 0.0.0.0 --port 80 --reload
-    container_name: catalogui-api
+    container_name: catalog-api
     ports:
       - 8081:80
     volumes:
-      - ./stamp-catalogue-api:/app
+      - ./stamp-catalog-api:/app

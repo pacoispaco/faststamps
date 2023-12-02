@@ -4,4 +4,5 @@ uvicorn
 pydantic-settings
 jinja2
 pytest
+pytest-playwright
 flake8

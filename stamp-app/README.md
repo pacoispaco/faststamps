@@ -19,7 +19,7 @@ For packaging, deploying and running:
 
  * [Docker](https://www.docker.com).
 
-For the app to fully work it needs running instances of the Faststamps Catalogue API and the Faststamps Collection API.
+For the app to fully work it needs running instances of the Faststamps catalog API and the Faststamps Collection API.
 
 ## Getting started
 

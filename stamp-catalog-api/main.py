@@ -9,9 +9,9 @@ import os.path
 import time
 
 description = """
-## Faststamps Catalogue API
+## Faststamps Catalog API
 
-This is a simple API for retrieving information on stamps in a stamp catalogue. This is a read-only
+This is a simple API for retrieving information on stamps in a stamp catalog. This is a read-only
 API.
 """
 
@@ -23,8 +23,8 @@ class Settings(BaseSettings):
        2) Key/values from a ".env" file. If they are not set there then from
        3) Default values set in this class."""
     VERSION: str = "0.0.1"
-    STAMP_CATALOGUE_CSV_FILE: str = "./data/french-stamps.csv"
-    STAMP_CATALOGUE_IMAGES_DIR: str = "./data/images/large"
+    STAMP_CATALOG_CSV_FILE: str = "./data/french-stamps.csv"
+    STAMP_CATALOG_IMAGES_DIR: str = "./data/images/large"
 
     class ConfigDict:
         env_file = ".env"
@@ -123,7 +123,7 @@ def parsed_accept_language(accept_language):
 
 
 app = FastAPI(
-    title="The Faststamps Catalogue API",
+    title="The Faststamps Catalog API",
     description=description,
     version=settings.VERSION)
 
@@ -131,11 +131,11 @@ app = FastAPI(
 @app.on_event("startup")
 def startup_event():
     """Initialize the API by initializing the database. That means opening the local CSV-file
-       containing a full stamp catalogue and then reading into some suitable in-memory data
+       containing a full stamp catalog and then reading into some suitable in-memory data
        structure."""
     global db, indexed_db
-    if os.path.exists(settings.STAMP_CATALOGUE_CSV_FILE):
-        with open(settings.STAMP_CATALOGUE_CSV_FILE) as f:
+    if os.path.exists(settings.STAMP_CATALOG_CSV_FILE):
+        with open(settings.STAMP_CATALOG_CSV_FILE) as f:
             db = pd.read_csv(f, delimiter=';', dtype={'issued': str, 'id_yt_no': str})
             # We replace all np.NAN with an empty string "" and create a multindex
             # consisting of the stamp type, Yt no and variant.
@@ -160,7 +160,7 @@ def api_root_resource(request: Request, response: Response) -> ApiInfo:
        specification of this API can be found. The version number identifies the implementation
        version and not the interface version."""
     tic = time.perf_counter_ns()
-    result = {"name": "Faststamps Catalogue API.",
+    result = {"name": "Faststamps Catalog API.",
               "version": settings.VERSION,
               "openapi_specification": str(request.url) + "docs",
               "health": str(request.url) + "health"}
@@ -205,16 +205,16 @@ def get_stamps(response: Response,
                                                            be >= 1."""),
                accept_language: Optional[str] = Header(None)) \
                -> StampList | None:
-    """Return the catalogue of stamps. If no query parameter is specified all stamps in the
-       catalogue are returned. All query parameters can be combined.
+    """Return the catalog of stamps. If no query parameter is specified all stamps in the
+       catalog are returned. All query parameters can be combined.
 
 NOTE: THIS VERSION IS DONE WITH PYDANTIC CLASSES.
 
 The query parameters `title`, `year`, `color`, `value` and `stamp_type` can be used to filter
-which stamps to return from the catalogue.
+which stamps to return from the catalog.
 
 The query parameters `start`and `count` control which and how many number of the, possibly
-filtered, stamps in the catalogue to return.
+filtered, stamps in the catalog to return.
 
 Examples:
 
@@ -293,7 +293,7 @@ centime".
 def get_stamp(response: Response,
               stamp_id: str = Path(description="""`stamp_id` is the unique id of the stamp in the
                                                   format T-N-V or T-N, where T is type, N is the
-                                                  Yvert-Tellier catalogue number and V is the
+                                                  Yvert-Tellier catalog number and V is the
                                                   variant. N is a number and V is usually a lower
                                                   case letter. Note that `stamp_id` may contain
                                                   whitespaces. Eg.
@@ -362,7 +362,7 @@ def get_stamp_image(response: Response, stamp_id: str = Path(description="""`sta
                                                                             id of the stamp in the
                                                                             format T-N-V, where T is
                                                                             type, N is the Yvert-
-                                                                            Tellier catalogue
+                                                                            Tellier catalog
                                                                             number. Note that it may
                                                                             contain whitespaces.
                                                                             E.g. '/stamps/Pour la
@@ -370,7 +370,7 @@ def get_stamp_image(response: Response, stamp_id: str = Path(description="""`sta
     """Return the image of the stamp with the given `stamp_id`."""
     global indexed_db
     tic = time.perf_counter_ns()
-    if os.path.exists(settings.STAMP_CATALOGUE_IMAGES_DIR):
+    if os.path.exists(settings.STAMP_CATALOG_IMAGES_DIR):
         # First we check that we have a valid stamp_id
         items = stamp_id.split("-")
         if len(items) < 2 or len(items) > 3:
@@ -389,7 +389,7 @@ def get_stamp_image(response: Response, stamp_id: str = Path(description="""`sta
             # Get the stamp
             stamp = indexed_db.loc[(yt_type, yt_no, yt_variant)]
             d = stamp.to_dict()
-            image_path = (os.path.join(settings.STAMP_CATALOGUE_IMAGES_DIR, d["image"]))
+            image_path = (os.path.join(settings.STAMP_CATALOG_IMAGES_DIR, d["image"]))
             toc = time.perf_counter_ns()
             # Return total server xecution time in milliseconds (not including FastAPI itself)
             msecs = f"API;dur={(toc-tic)/1000000}"
@@ -469,7 +469,7 @@ def get_stamp_titles(response: Response,
 
 @app.get("/stamp_years", status_code=status.HTTP_200_OK, tags=["stamp attributes"])
 def get_stamp_years(response: Response):
-    """Return all the years that stamps in the catalogue have been issued."""
+    """Return all the years that stamps in the catalog have been issued."""
     tic = time.perf_counter_ns()
     stamps = db
     years = stamps['issued'].unique().tolist()
@@ -484,7 +484,7 @@ def get_stamp_years(response: Response):
 @app.get("/stamp_colors", status_code=status.HTTP_200_OK, tags=["stamp attributes"])
 def get_stamp_colors(response: Response,
                      accept_language: Optional[str] = Header(None)):
-    """Return all the colors that stamps in the catalogue can have."""
+    """Return all the colors that stamps in the catalog can have."""
     tic = time.perf_counter_ns()
     language = parsed_accept_language(accept_language)[0][0]
     stamps = db
@@ -506,7 +506,7 @@ def get_stamp_colors(response: Response,
 @app.get("/stamp_values", status_code=status.HTTP_200_OK, tags=["stamp attributes"])
 def get_stamp_values(response: Response,
                      accept_language: Optional[str] = Header(None)):
-    """Return all the printed values that stamps in the catalogue can have."""
+    """Return all the printed values that stamps in the catalog can have."""
     tic = time.perf_counter_ns()
     language = parsed_accept_language(accept_language)[0][0]
     stamps = db
