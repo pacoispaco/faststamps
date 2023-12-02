@@ -78,7 +78,7 @@ def search_result_page_spec(count: int,
                                       last_page=last_page,
                                       left_ellipsis=False,
                                       right_ellipsis=False)
-        first =0 
+        first = 0
         last = 0
         if linked_pages >= page_count:
             # All pages will have links
