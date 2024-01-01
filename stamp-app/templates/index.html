@@ -57,7 +57,7 @@
                type="text"
                name="q"
                hx-get="/search_results"
-               hx-trigger="keyup changed delay:500ms"
+               hx-trigger="keyup[this.value.trim().length > 0] changed delay:500ms"
                hx-target="#search-results"
                placeholder="Search for stamps by title"
                autofocus>
