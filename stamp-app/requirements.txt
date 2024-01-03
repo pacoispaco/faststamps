@@ -3,6 +3,7 @@ httpx
 uvicorn
 pydantic-settings
 jinja2
+PyYAML
 pytest
 pytest-playwright
 flake8

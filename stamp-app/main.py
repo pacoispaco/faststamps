@@ -5,6 +5,7 @@ from typing import Optional, Annotated  # List
 # from pydantic import BaseSettings
 from pydantic_settings import BaseSettings
 import os.path
+import logging, logging.config
 import httpx
 import datetime
 import time
@@ -23,6 +24,9 @@ class Settings(BaseSettings):
     DATE_FORMAT: str = "Date: %a, %d %b %Y %H:%M:%S"
     CATALOGUE_API_URL: str = "http://127.0.0.1:8081/"
     RESULTS_PER_PAGE: int = 5
+    LOGGING_LEVEL: str = "DEBUG"
+    logger: logging.Logger = logging.getLogger(__name__)
+    logger.setLevel(LOGGING_LEVEL)
 
     class ConfigDict:
         env_file = ".env"
@@ -91,7 +95,7 @@ async def get_search(request: Request, response: Response,
                                                  linked_pages=10,
                                                  first_page=True,
                                                  last_page=True)
-            result = templates.TemplateResponse("search.html",
+            result = templates.TemplateResponse("index.html",
                                                 {"request": request,
                                                  "ssr": ssr,
                                                  "rps": rps})
@@ -100,7 +104,7 @@ async def get_search(request: Request, response: Response,
             result = response
     else:
         rps = None
-        result = templates.TemplateResponse("search.html", {"request": request})
+        result = templates.TemplateResponse("index.html", {"request": request})
     toc = time.perf_counter_ns()
     # Set Server-timing header (server excution time in ms, not including FastAPI itself)
     result.headers["Server-timing"] = f"API;dur={(toc - tic)/1000000}"
@@ -115,12 +119,17 @@ async def get_search_results(request: Request, response: Response,
                                                 description="Start")):
     """HTML representation of the search results (search_results.html)."""
     tic = time.perf_counter_ns()
+    settings.logger.debug(f"get_search_results: q='{q}'")
+    # Make sure to strip query string of leading and trailing white space.
+    q = q.strip()
     # Get search results from Catalogue API
     if q:
         url = f"{settings.CATALOGUE_API_URL}stamps?title={q}"
     else:
         url = f"{settings.CATALOGUE_API_URL}stamps"
+    settings.logger.debug("Before call")
     r = httpx.get(url)
+    settings.logger.debug("After call")
     # Set up the HTMX-response
     if r.status_code == 200:
         ssr = search.stamp_search_results(q,
