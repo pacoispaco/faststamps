@@ -1,6 +1,8 @@
 services:
   stamp-app:
     build: ./stamp-app
+    command: uvicorn main:app --host:0.0.0.0 --port 80 --reload --log-config=logging-conf.yaml
+
     container_name: stamp-app
     ports:
       - 8080:80
