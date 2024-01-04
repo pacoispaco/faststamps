@@ -15,10 +15,11 @@ Below I list a number of to-dos for the three components.
 In the first implementation there will be only one user (me) and that account will be managed by the
 Collections API. Eventually we will need a separate Accounts API to manage multiple users.
 
-Implement first MWV [In progress]:
+Implement first MWV:
 - [X] Implement first HTML layout of index.html and CSS styling with Bulma CSS.
 - [X] Dockerify.
 - [X] Implement the search view with HTMX using the catalog API with support for searching on English title.
+- [X] Add proper logging.
 
 Implement more proper search support:
 - [ ] Case insensitive.
@@ -48,7 +49,7 @@ Currently the API only supports a single catalog. The catalog CSV file to use is
 - [X] Add API typing based on Pydantic BaseModel.
 - [X] Dockerify.
 - [ ] Use Pydantic validation on all query parameters.
-- [ ] Add proper logging.
+- [X] Add proper logging.
 - [ ] Move the database (reading of the catalog CSV file) to a separate file/module.
 - [ ] Use an embedded database (unqlite, tidydb or sqllite).
 - [ ] Document the catalog CSV file format (as an inter-system data transfer format).
