@@ -15,5 +15,5 @@ COPY data/ /app/data/
 COPY test_api.py /app
 
 # Start the server
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80", "--log-config=logging-conf.yaml"]
 

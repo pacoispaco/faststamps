@@ -3,6 +3,8 @@ from fastapi.responses import FileResponse
 from typing import Optional, List
 from pydantic import BaseModel, HttpUrl
 from pydantic_settings import BaseSettings
+import logging
+import logging.config
 import pandas as pd
 import numpy as np
 import os.path
@@ -25,6 +27,9 @@ class Settings(BaseSettings):
     VERSION: str = "0.0.1"
     STAMP_CATALOG_CSV_FILE: str = "./data/french-stamps.csv"
     STAMP_CATALOG_IMAGES_DIR: str = "./data/images/large"
+    LOGGING_LEVEL: str = "DEBUG"
+    logger: logging.Logger = logging.getLogger(__name__)
+    logger.setLevel(LOGGING_LEVEL)
 
     class ConfigDict:
         env_file = ".env"
@@ -230,6 +235,8 @@ centime".
 * `/stamps?start=1000` will return all stamps beginning with the 1000:th stamp.
 * `/stamps?count=100` will return a maximum of 100 stamps.
     """
+    # settings.logger.info(f"db: {db}")
+    # settings.logger.info(f"indexed_db: {indexed_db}")
     tic = time.perf_counter_ns()
     language = parsed_accept_language(accept_language)[0][0]
     if start is not None and start <= 0:

@@ -11,7 +11,7 @@ services:
 
   catalog-api:
     build: ./stamp-catalog-api
-    command: uvicorn main:app --host 0.0.0.0 --port 80 --reload
+    command: uvicorn main:app --host 0.0.0.0 --port 80 --reload  --log-config=logging-conf.yaml
     container_name: catalog-api
     ports:
       - 8081:80
