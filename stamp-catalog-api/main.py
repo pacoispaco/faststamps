@@ -1,5 +1,6 @@
 from fastapi import FastAPI, status, Request, Response, Path, Query, Header
 from fastapi.responses import FileResponse
+from contextlib import asynccontextmanager
 from typing import Optional, List
 from pydantic import BaseModel, HttpUrl
 from pydantic_settings import BaseSettings
@@ -127,17 +128,10 @@ def parsed_accept_language(accept_language):
         return result
 
 
-app = FastAPI(
-    title="The Faststamps Catalog API",
-    description=description,
-    version=settings.VERSION)
-
-
-@app.on_event("startup")
-def startup_event():
-    """Initialize the API by initializing the database. That means opening the local CSV-file
-       containing a full stamp catalog and then reading into some suitable in-memory data
-       structure."""
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup code here
+    settings.logger.info("Starting up and initializing stuff.")
     global db, indexed_db
     if os.path.exists(settings.STAMP_CATALOG_CSV_FILE):
         with open(settings.STAMP_CATALOG_CSV_FILE) as f:
@@ -152,11 +146,16 @@ def startup_event():
             # Create index of db and sort the index
             indexed_db = db.set_index(["type_fr", "id_yt_no", "id_yt_var"])
             indexed_db = indexed_db.sort_index()
+    yield
+    # Clean up code here
+    settings.logger.info("Shutting down and cleaning up.")
 
 
-@app.on_event("shutdown")
-async def shutdown():
-    pass
+app = FastAPI(
+    title="The Faststamps Catalog API",
+    description=description,
+    version=settings.VERSION,
+    lifespan=lifespan)
 
 
 @app.get("/", tags=["stamps"])
@@ -235,8 +234,6 @@ centime".
 * `/stamps?start=1000` will return all stamps beginning with the 1000:th stamp.
 * `/stamps?count=100` will return a maximum of 100 stamps.
     """
-    # settings.logger.info(f"db: {db}")
-    # settings.logger.info(f"indexed_db: {indexed_db}")
     tic = time.perf_counter_ns()
     language = parsed_accept_language(accept_language)[0][0]
     if start is not None and start <= 0:
