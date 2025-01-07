@@ -44,7 +44,7 @@ jobs:
             cd stamp-app
             pytest -vs
 
-      - name: Log in to the Github registry befor building the DOcker image
+      - name: Log in to the Github registry before building the Docker image
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -55,7 +55,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ghcr.io/${{ github.repository }}-app
 
       - name: Build and push Docker image to the Github registry
         id: push
@@ -69,6 +69,6 @@ jobs:
       - name: Generate artifact attestation of the Docker image
         uses: actions/attest-build-provenance@v2
         with:
-          subject-name: ghcr.io/${{ github.repository }}
+          subject-name: ghcr.io/${{ github.repository }}-app
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
