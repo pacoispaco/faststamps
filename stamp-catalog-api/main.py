@@ -138,7 +138,7 @@ async def lifespan(app: FastAPI):
             db = pd.read_csv(f, delimiter=';', dtype={'issued': str, 'id_yt_no': str})
             # We replace all np.NAN with an empty string "" and create a multindex
             # consisting of the stamp type, Yt no and variant.
-            db = db.replace({np.NaN: ""})
+            db = db.replace({np.nan: ""})
             # Add URL column
             db["url"] = db[["type_fr", "id_yt_no", "id_yt_var"]].apply(
                     lambda x: f"stamps/{x[0]}-{x[1]}-{x[2]}" if x[2]
