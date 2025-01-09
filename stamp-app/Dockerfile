@@ -9,6 +9,7 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Copy the application to the working directory
 COPY main.py /app
+COPY search.py /app
 COPY templates /app/templates
 COPY favicon.png /app
 COPY faststamps-logo.png /app
