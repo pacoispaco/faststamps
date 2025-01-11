@@ -13,6 +13,7 @@ COPY main.py /app
 COPY .env /app
 COPY data/ /app/data/
 COPY test_api.py /app
+COPY logging-conf.yaml /app
 
 # Start the server
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80", "--log-config=logging-conf.yaml"]
