@@ -8,7 +8,6 @@ import os.path
 import logging
 import logging.config
 import httpx
-import datetime
 import time
 import hashlib
 import search
@@ -61,13 +60,29 @@ app = FastAPI(
 async def get_index_file(request: Request):
     """The main application page (index.html)."""
     tic = time.perf_counter_ns()
-    result = templates.TemplateResponse("index.html", {"request": request})
-    path = os.path.join(settings.TEMPLATES_DIR, "index.html")
-    m_time = os.path.getmtime(path)
-    m_time_str = datetime.datetime.fromtimestamp(m_time).strftime(settings.DATE_FORMAT)
-    # Set Last-modified and Etag headers
-    result.headers["Last-modified"] = m_time_str
-    result.headers["Etag"] = md5_digest(path)
+
+    # Get all stamps from the API
+    url = f"{settings.CATALOGUE_API_URL}stamps"
+    r = httpx.get(url)
+    if r.status_code == 200:
+        ssr = search.stamp_search_results("",
+                                          r,
+                                          0,
+                                          settings.RESULTS_PER_PAGE)
+        rps = search.search_result_page_spec(ssr.stamps_count,
+                                             0,
+                                             settings.RESULTS_PER_PAGE,
+                                             linked_pages=10,
+                                             first_page=True,
+                                             last_page=True)
+        result = templates.TemplateResponse("index.html",
+                                            {"request": request,
+                                             "ssr": ssr,
+                                             "rps": rps})
+    else:
+        rps = None
+        result = templates.TemplateResponse("index.html", {"request": request})
+
     toc = time.perf_counter_ns()
     # Set Server-timing header (server excution time in ms, not including FastAPI itself)
     result.headers["Server-timing"] = f"API;dur={(toc - tic)/1000000}"
