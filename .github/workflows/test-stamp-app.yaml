@@ -4,8 +4,8 @@ on:
   push:
     branches: 
       - master
-    path:
-      - stamp-app
+    paths:
+      - stamp-app/**
 
   # Enables this workflow to be manually run from the Actions tab
   workflow_dispatch:
@@ -36,13 +36,21 @@ jobs:
         run: |
             cd stamp-app
             pip install -r requirements.txt
+            # We need the requirements for the catalog API in order to run it for tests
+            cd ../stamp-catalog-api
+            pip install -r requirements.txt
 
       - name: Run flake8
         run: |
             cd stamp-app
             flake8 --config flake8.conf
 
-      - name: Run pytest tests for stamp-app web-app-api
+      - name: Start up stamp-catalog-api in background before running tests
+        run: | 
+            cd stamp-catalog-api
+            uvicorn main:app --reload --port 8081 &
+
+      - name: Run pytest tests for stamp-app
         run: |
             cd stamp-app
             pytest -vs

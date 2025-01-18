@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - master
-    path:
-      - stamp-catalog-api
+    paths:
+      - stamp-catalog-api/**
 
   # Enables this workflow to be manually run from the Actions tab
   workflow_dispatch:
