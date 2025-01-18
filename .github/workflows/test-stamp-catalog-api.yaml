@@ -2,7 +2,10 @@ name: test-stamp-catalog-api
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+    path:
+      - stamp-catalog-api
 
   # Enables this workflow to be manually run from the Actions tab
   workflow_dispatch:
