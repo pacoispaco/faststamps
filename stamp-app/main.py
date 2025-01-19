@@ -57,20 +57,24 @@ app = FastAPI(
 
 
 @app.get("/", response_class=HTMLResponse)
-async def get_index_file(request: Request):
+async def get_index_file(request: Request,
+                         start: int = Query(default=0,
+                                            description="Start result")):
     """The main application page (index.html)."""
     tic = time.perf_counter_ns()
 
     # Get all stamps from the API
     url = f"{settings.CATALOGUE_API_URL}stamps"
+    settings.logger.debug(f"(get_index_file) url: {url}")
     r = httpx.get(url)
+    settings.logger.debug(f"(get_index_file) r.status_code: {r.status_code}")
     if r.status_code == 200:
         ssr = search.stamp_search_results("",
                                           r,
-                                          0,
+                                          start,
                                           settings.RESULTS_PER_PAGE)
         rps = search.search_result_page_spec(ssr.stamps_count,
-                                             0,
+                                             start,
                                              settings.RESULTS_PER_PAGE,
                                              linked_pages=10,
                                              first_page=True,
@@ -143,9 +147,7 @@ async def get_search_results(request: Request, response: Response,
         url = f"{settings.CATALOGUE_API_URL}stamps?title={q}"
     else:
         url = f"{settings.CATALOGUE_API_URL}stamps"
-    settings.logger.debug("Before call")
     r = httpx.get(url)
-    settings.logger.debug("After call")
     # Set up the HTMX-response
     if r.status_code == 200:
         ssr = search.stamp_search_results(q,
@@ -162,7 +164,16 @@ async def get_search_results(request: Request, response: Response,
                                             {"request": request,
                                              "ssr": ssr,
                                              "rps": rps})
-        result.headers["HX-Push"] = f"/search?q={q}"
+        # Set the URL for the returned page and make sure the browser is updated
+        if q:
+            path = f"/search?q={q}"
+            if start > 0:
+                path += f"&start={start}"
+        else:
+            path = "/"
+            if start > 0:
+                path += f"?start={start}"
+        result.headers["HX-Push"] = path
         toc = time.perf_counter_ns()
         # Set Server-timing header (server excution time in ms, not including FastAPI itself)
         result.headers["Server-timing"] = f"API;dur={(toc - tic)/1000000}"

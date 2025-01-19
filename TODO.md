@@ -20,6 +20,8 @@ Implement first MWV:
 - [X] Dockerify.
 - [X] Implement the search view with HTMX using the catalog API with support for searching on English title.
 - [X] Add proper logging.
+- [X] Fix correct URL:s with query parameters for selected search string and selected page.
+- [ ] Add custom 404 page.
 
 Implement more proper search support:
 - [ ] Case insensitive.
@@ -48,7 +50,7 @@ Currently the API only supports a single catalog. The catalog CSV file to use is
 - [X] Add use of the Server-Timing HTTP header.
 - [X] Add API typing based on Pydantic BaseModel.
 - [X] Dockerify.
-- [ ] Use Pydantic validation on all query parameters.
+- [X] Use Pydantic validation on all query parameters.
 - [X] Add proper logging.
 - [ ] Move the database (reading of the catalog CSV file) to a separate file/module.
 - [ ] Use an embedded database (unqlite, tidydb or sqllite).
